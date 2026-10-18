@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0b1019" />
+  <meta name="color-scheme" content="dark" />
+  <meta name="description" content="UniTeam is an independent personal software project exploring desktop applications, Python automation and AI-assisted development." />
+  <title>UniTeam — Independent Software Project</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0b1019;
+      --panel: #111925;
+      --panel2: #131d2b;
+      --text: #f3f5fa;
+      --muted: #9aa8bd;
+      --border: #273346;
+      --accent: #a7c0ff;
+      --accent-strong: #7098ec;
+      --white: #ffffff;
+      font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; background: var(--bg); }
+    body { margin: 0; min-width: 320px; background: var(--bg); color: var(--text); }
+    a { text-decoration: none; color: inherit; }
+    a:focus-visible { outline: 2px solid var(--accent); outline-offset: 5px; }
+    .container { width: min(1130px, calc(100% - 80px)); margin: 0 auto; }
+    header { height: 88px; border-bottom: 1px solid rgba(171, 196, 230, .13); position: relative; z-index: 1; background: var(--bg); }
+    .nav { display: flex; align-items: center; justify-content: space-between; height: 100%; }
+    .logo { display: inline-flex; align-items: center; gap: 13px; font-size: 23px; font-weight: 750; letter-spacing: -.8px; color: var(--text); }
+    .logo-mark { display: grid; place-items: center; width: 39px; height: 39px; border-radius: 12px; background: #c2d2f5; color: #14253e; font-size: 19px; font-weight: 850; letter-spacing: -1px; }
+    .navlinks { display: flex; align-items: center; gap: 30px; }
+    .navlinks a { font-size: 13px; color: #b8c3d2; font-weight: 600; transition: color .2s ease; }
+    .navlinks a:hover { color: white; }
+    .navlinks .nav-cta { border: 1px solid #34435a; padding: 12px 17px; border-radius: 9px; color: #ecf1fb; }
+    main { position: relative; overflow: hidden; }
+    .hero { min-height: 560px; padding: 110px 0 98px; position: relative; }
+    .hero::before { content: ""; position: absolute; right: -150px; top: -240px; width: 790px; height: 760px; pointer-events: none; background: radial-gradient(ellipse, rgba(43,74,123,.32), transparent 65%); opacity: .82; }
+    .hero-inner { position: relative; display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(300px, .72fr); gap: 60px; align-items: center; }
+    .eyebrow { color: #abc6f2; text-transform: uppercase; letter-spacing: 2.25px; font-size: 11px; font-weight: 800; }
+    .eyebrow::before { content: ""; width: 7px; height: 7px; display: inline-block; background: #a5c6fc; border-radius: 50%; margin-right: 12px; box-shadow: 0 0 17px rgba(151, 189, 248, .45); transform: translateY(-1px); }
+    h1 { max-width: 760px; font-size: clamp(52px, 5.9vw, 81px); line-height: 1.07; letter-spacing: -4px; font-weight: 730; margin: 30px 0 25px; color: #f7f9fe; }
+    h1 em { font-style: normal; color: #acc5ff; }
+    .lead { color: #a8b5c9; font-size: 17px; line-height: 1.8; max-width: 640px; margin: 0; }
+    .actions { display: flex; flex-wrap: wrap; gap: 13px; margin-top: 34px; }
+    .button { border-radius: 9px; padding: 14px 21px; display: inline-flex; gap: 14px; align-items: center; justify-content: center; font-size: 13px; font-weight: 740; border: 1px solid transparent; transition: transform .2s ease, background .2s ease; }
+    .button:hover { transform: translateY(-2px); }
+    .button-primary { color: #142338; background: #c5d6f8; }
+    .button-primary:hover { background: #e2ebff; }
+    .button-secondary { color: #c7d3e6; border-color: #364254; background: rgba(25,36,53,.35); }
+    .button-secondary:hover { background: #1b283a; }
+    .hero-art { position: relative; min-height: 340px; display: flex; align-items: center; justify-content: center; }
+    .orbit { position: relative; width: 320px; height: 320px; border: 1px solid rgba(140,173,229,.19); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    .orbit::before { content: ""; position: absolute; inset: 43px; border: 1px solid rgba(170,198,239,.22); border-radius: 50%; }
+    .orbit::after { content: ""; position: absolute; inset: 86px; background: radial-gradient(circle at 31% 26%, #314d77, #1a2941 68%); border: 1px solid #405474; box-shadow: 0 0 95px 10px rgba(65,98,159,.23); border-radius: 36px; transform: rotate(18deg); }
+    .orbit-letter { position: relative; z-index: 1; font-size: 71px; font-weight: 790; color: #d6e4fc; letter-spacing: -9px; padding-right: 9px; }
+    .satellite { position: absolute; width: 10px; height: 10px; background: #acc7f8; border: 3px solid var(--bg); border-radius: 50%; box-shadow: 0 0 0 1px #8ca9db; }
+    .satellite.a { top: 35px; left: 52px; }
+    .satellite.b { bottom: 62px; right: 19px; width: 8px; height: 8px; }
+    .art-label { position: absolute; color: #7488a8; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
+    .art-label.t { top: -5px; right: 5px; }
+    .art-label.b { bottom: 0; left: 0; }
+    .rule { border-top: 1px solid #273345; }
+    .section { padding: 83px 0 92px; }
+    .section-heading { display: flex; justify-content: space-between; align-items: end; gap: 26px; margin-bottom: 34px; }
+    .section-heading h2 { color: #f2f5fa; font-size: clamp(31px, 3.5vw, 44px); line-height: 1.16; letter-spacing: -1.7px; font-weight: 710; margin: 15px 0 0; }
+    .section-heading p { font-size: 14px; line-height: 1.75; max-width: 390px; color: #96a6bd; margin: 0 0 4px; }
+    .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+    .card { min-height: 244px; background: linear-gradient(160deg, #151f2d, #111924); border: 1px solid #2b394c; border-radius: 15px; padding: 27px 27px 29px; }
+    .card-top { display: flex; align-items: center; justify-content: space-between; }
+    .card-icon { width: 40px; height: 40px; display: grid; place-items: center; border: 1px solid #455977; border-radius: 11px; color: #bfd3f9; font-size: 20px; line-height: 1; }
+    .num { color: #7489a9; letter-spacing: 1.1px; font-size: 11px; font-weight: 700; }
+    .card h3 { font-size: 18px; font-weight: 690; letter-spacing: -.4px; margin: 28px 0 9px; color: #edf2fa; }
+    .card p { font-size: 14px; line-height: 1.7; color: #9caac0; margin: 0; }
+    .about { background: #0e1621; border-top: 1px solid #273345; border-bottom: 1px solid #273345; }
+    .about-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 90px; align-items: center; padding: 70px 0; }
+    .about h2 { font-size: clamp(28px, 3vw, 39px); font-weight: 700; letter-spacing: -1.3px; margin: 14px 0 0; line-height: 1.2; }
+    .about p { line-height: 1.8; color: #a6b3c8; font-size: 15px; margin: 0; }
+    footer { padding: 31px 0 38px; color: #8091aa; font-size: 12px; }
+    .footer-inner { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+    @media(max-width: 890px){ .hero-inner { grid-template-columns: 1fr; gap: 45px; }.hero { padding: 86px 0 75px; }.hero-art { min-height: 200px; display: none; }.section-heading { align-items: start; flex-direction: column; }.about-inner { gap: 30px; } }
+    @media(max-width: 660px){ .container { width: calc(100% - 40px); } header { height: 72px; } .logo { font-size: 21px; }.logo-mark { width: 36px; height: 36px; } .navlinks { gap: 16px; }.navlinks .hide-mobile { display: none; }.navlinks .nav-cta { padding: 10px 12px; }.hero { padding: 75px 0 78px; min-height: auto; } h1 { font-size: clamp(44px, 11vw, 64px); letter-spacing: -2.3px; } .lead { font-size: 15px; } .grid { grid-template-columns: 1fr; }.card { min-height: 205px; } .section { padding: 65px 0 75px; } .section-heading h2 { font-size: 34px; } .about-inner { grid-template-columns: 1fr; padding: 61px 0; } }
+    @media(prefers-reduced-motion:reduce) { html {scroll-behavior:auto;} .button {transition:none;} }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <a class="logo" href="#top" aria-label="UniTeam home"><span class="logo-mark">U</span>UniTeam</a>
+      <nav class="navlinks" aria-label="Main navigation">
+        <a href="#focus" class="hide-mobile">Focus</a>
+        <a href="#about" class="hide-mobile">About</a>
+        <a class="nav-cta" href="https://github.com/michazaval" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+      </nav>
+    </div>
+  </header>
+  <main id="top">
+    <section class="hero">
+      <div class="container hero-inner">
+        <div>
+          <div class="eyebrow">Independent software project</div>
+          <h1>Ideas into<br /><em>useful software.</em></h1>
+          <p class="lead">UniTeam is a personal development project exploring software engineering, smart automation and practical uses of AI. A space to experiment, learn and build things that matter.</p>
+          <div class="actions">
+            <a class="button button-primary" href="https://github.com/michazaval" target="_blank" rel="noopener noreferrer">Explore GitHub <span aria-hidden="true">↗</span></a>
+            <a class="button button-secondary" href="#focus">What I work on <span aria-hidden="true">↓</span></a>
+          </div>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <span class="art-label t">BUILD / 001</span>
+          <div class="orbit"><span class="orbit-letter">U</span><span class="satellite a"></span><span class="satellite b"></span></div>
+          <span class="art-label b">LEARN — CREATE — IMPROVE</span>
+        </div>
+      </div>
+    </section>
+    <div class="container"><div class="rule"></div></div>
+    <section class="section container" id="focus" aria-labelledby="focus-title">
+      <div class="section-heading">
+        <div><div class="eyebrow">Areas of interest</div><h2 id="focus-title">What I work on</h2></div>
+        <p>Hands-on software development with an emphasis on useful tools, straightforward design and continuous learning.</p>
+      </div>
+      <div class="grid">
+        <article class="card"><div class="card-top"><span class="card-icon" aria-hidden="true">⌘</span><span class="num">01 / SOFTWARE</span></div><h3>Application development</h3><p>Exploring desktop applications, intuitive interfaces and maintainable code.</p></article>
+        <article class="card"><div class="card-top"><span class="card-icon" aria-hidden="true">⚙</span><span class="num">02 / AUTOMATION</span></div><h3>Automation &amp; tools</h3><p>Building Python-based workflows that make repetitive processes simpler.</p></article>
+        <article class="card"><div class="card-top"><span class="card-icon" aria-hidden="true">✳</span><span class="num">03 / AI</span></div><h3>AI-assisted engineering</h3><p>Learning how modern AI systems support coding, analysis and testing.</p></article>
+      </div>
+    </section>
+    <section class="about" id="about" aria-labelledby="about-title"><div class="container about-inner"><div><div class="eyebrow">About UniTeam</div><h2 id="about-title">Small project.<br />Long-term curiosity.</h2></div><p>UniTeam is an independently run personal technology project, not a registered company. Its purpose is educational experimentation, personal software development and the exploration of emerging tools.</p></div></section>
+  </main>
+  <footer><div class="container footer-inner"><span>© 2026 UniTeam · Independent personal project</span><span>Built with curiosity and care.</span></div></footer>
+</body>
+</html>

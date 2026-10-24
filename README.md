@@ -1,39 +1,40 @@
 # LocalAgent — official product website
 
-This public repository contains **only** the LocalAgent product website, not the private Windows application. It is an in-development project: demo task flows are illustrated simulations, not live agent actions or an available Windows release.
+This public repository contains **only the static LocalAgent website**, not the LocalAgent Windows application.
+
+LocalAgent is a Windows AI assistant **in active development**. This website's interactive examples are visual simulations, not live AI operations. No stable Windows download is advertised until a verified release is approved.
 
 ## Development
 
-Open `index.html` locally. The page works offline without a cloud service, external libraries or an AI backend. Node.js 20+ is only needed for the build checks:
+Open `index.html` locally in a browser. No build tooling is required to use the static page.
+
+To validate and prepare an explicit allow-listed deploy bundle with Node.js 20+:
 
 ```bash
 npm run check
 npm run build
 ```
 
-The explicit `dist/` allow-list includes `index.html`, `404.html`, `robots.txt` and six local assets (`styles.css`, `cinematic.css`, `polish.css`, `main.js`, `polish.js`, `favicon.svg`). No other repository content is published.
+This creates `dist/` from these files only: `index.html`, `404.html`, `robots.txt`, `assets/main.js`, `assets/styles.css`, `assets/cinematic.css`, and `assets/favicon.svg`.
 
-## GitHub Pages (two URLs)
+## GitHub Pages — stable and develop preview
 
-The old UniTeam version is retained in `archive/uniteam-site-before-localagent`. Pages is configured to use GitHub Actions, and the project has two URLs:
+This repository uses two development branches:
 
-- **Stable `main`**: https://michazaval.github.io/localagent-site/
-- **Preview `develop`**: https://michazaval.github.io/localagent-site/preview/
+- **Stable**: [https://michazaval.github.io/localagent-site/](https://michazaval.github.io/localagent-site/) contains **main** only.
+- **Preview**: [https://michazaval.github.io/localagent-site/preview/](https://michazaval.github.io/localagent-site/preview/) contains the latest successfully verified **develop**.
 
-Workflow: `feature/* → develop → owner QA → main`. A feature PR may merge into `develop` after checks without mandatory independent review. Only an explicit owner-approved release updates `main`.
+Workflow: `feature/* → develop → owner QA → main`. Website feature PRs can be merged into `develop` without mandatory third-party review. Promoting `develop` to `main` requires the owner's explicit approval.
 
-A successful first-party `develop` CI push triggers a publishing workflow on the default branch. The workflow verifies and builds `main` into the website root and the passing `develop` SHA into `preview/`, then uploads a single allow-listed static artifact. The stable site is never replaced by develop's content. The Pages deploy job runs on `main` and alone has Pages and OIDC write permissions. No extra secrets or hosting services are needed.
+On a successful `develop` push check, a privileged **default-branch** workflow rebuilds both folders and publishes one GitHub Pages artifact: allow-listed `main/dist/*` at the root and allow-listed `develop/dist/*` at `preview/`. A `main` push also rebuilds the combined site. Consequently, a `develop` update cannot change the stable site's files. The deployment job alone has `pages: write` and `id-token: write` permissions; previews only run from verified first-party pushes, not pull request events.
 
+Source is **GitHub Actions** in Settings → Pages. The `github-pages` environment may remain limited to `main`, because deployment is initiated by the workflow on the default branch. No additional GitHub tokens or third-party hosting are required.
 
-## Product and security boundaries
+The UniTeam version is preserved in `archive/uniteam-site-before-localagent`. Pages URLs do not redirect automatically when a repository is renamed.
 
-- The desktop LocalAgent code remains private in `michazaval/LocalAgent` and is **not** included in this site.
-- All four animated AI states and three task scenarios are **visual simulations**.
-- No analytics, tracking, cloud-LLM calls or remote imagery are required at runtime.
-- Do not add secret keys, runtime logs, personal memory, model files, or absolute local paths to this public repository.
-- The website supports RU/EN, narrow mobile screens, system reduced motion and a manual decorative-motion toggle.
-- URLs beneath `/localagent-site/` use the project base path; `404.html` links safely back to the project root.
+## Privacy and security
 
-## QA
-
-Run `npm run build` (static and Node tests) and smoke-check Chromium and Firefox at 320, 390, 768, 1024 and 1440 px. Test language toggle, mobile menu, demo scenarios, animation pause, keyboard focus and links. Browser acceptance remains separate from static tests.
+- This repo is public. Never push private LocalAgent application code, SQLite databases, logs, local paths, weights, passwords, tokens, or user data.
+- The site has no cloud LLM or telemetry requirements.
+- The private Windows project remains in `michazaval/LocalAgent`.
+- Everything depicted as an interaction is a **simulation** until real functionality is independently verified and released.

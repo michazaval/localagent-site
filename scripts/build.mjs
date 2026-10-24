@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const dist = path.join(root, 'dist');
 // Explicit allow-list. No accidental publication of workspace files or secrets.
-const files = ['index.html', 'robots.txt', '404.html', 'assets/styles.css', 'assets/cinematic.css', 'assets/main.js', 'assets/polish.js', 'assets/polish.css', 'assets/favicon.svg'];
+const files = ['index.html', 'robots.txt', '404.html', 'assets/styles.css', 'assets/cinematic.css', 'assets/main.js', 'assets/polish.js', 'assets/polish.css', 'assets/atelier.js', 'assets/atelier.css', 'assets/favicon.svg'];
 fs.rmSync(dist, { recursive: true, force: true });
 for (const file of files) {
   const source = path.join(root, file);

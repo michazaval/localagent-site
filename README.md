@@ -1,36 +1,33 @@
 # LocalAgent — official product website
 
-This public repository contains **only the static LocalAgent website**, not the LocalAgent Windows application.
-
-LocalAgent is a Windows AI assistant **in active development**. This website's interactive examples are visual simulations, not live AI operations. No stable Windows download is advertised until a verified release is approved.
+This public repository contains **only** the LocalAgent product website, not the private Windows application. It is an in-development project: demo task flows are illustrated simulations, not live agent actions or an available Windows release.
 
 ## Development
 
-Open `index.html` locally in a browser. No build tooling is required to use the static page.
-
-To validate and prepare an explicit allow-listed deploy bundle with Node.js 20+:
+Open `index.html` locally. The page works offline without a cloud service, external libraries or an AI backend. Node.js 20+ is only needed for the build checks:
 
 ```bash
 npm run check
 npm run build
 ```
 
-This creates `dist/` from these files only: `index.html`, `404.html`, `robots.txt`, `assets/main.js`, `assets/styles.css`, `assets/cinematic.css`, and `assets/favicon.svg`.
+The explicit `dist/` allow-list includes `index.html`, `404.html`, `robots.txt` and six local assets (`styles.css`, `cinematic.css`, `polish.css`, `main.js`, `polish.js`, `favicon.svg`). No other repository content is published.
 
-## Publishing with GitHub Pages
+## GitHub Pages
 
-1. Rename the repository from `uniteam-site` to `localagent-site` in **Settings → General → Repository name** (owner action).
-2. In **Settings → Pages**, set the source to **GitHub Actions**.
-3. Review and merge the website PR into `main` **after the rename**, so GitHub Actions validates and deploys the static bundle.
-4. The anticipated URL is `https://michazaval.github.io/localagent-site/` once Pages reports a successful deployment.
+The repository was renamed to `michazaval/localagent-site` and the previous UniTeam version is preserved at `archive/uniteam-site-before-localagent`. GitHub Pages is configured to build using GitHub Actions. A push to the site's `main` after a reviewed PR builds and deploys only `dist/` to `https://michazaval.github.io/localagent-site/`.
 
-Pull requests only validate; they do **not** deploy. Deployment requires `main` on `michazaval/localagent-site`. `github-pages` environment should allow deployments from `main` only.
+On pull requests, only validation runs. For deployment, the workflow grants `pages: write` and `id-token: write` in the deployment job, not the PR build. Keep the `github-pages` environment restricted to `main`.
 
-The original UniTeam site is retained in `archive/uniteam-site-before-localagent`. Renaming a repository does **not** redirect GitHub Pages project-site URLs; the former `/uniteam-site/` link may stop working.
+## Product and security boundaries
 
-## Privacy and security
+- The desktop LocalAgent code remains private in `michazaval/LocalAgent` and is **not** included in this site.
+- All four animated AI states and three task scenarios are **visual simulations**.
+- No analytics, tracking, cloud-LLM calls or remote imagery are required at runtime.
+- Do not add secret keys, runtime logs, personal memory, model files, or absolute local paths to this public repository.
+- The website supports RU/EN, narrow mobile screens, system reduced motion and a manual decorative-motion toggle.
+- URLs beneath `/localagent-site/` use the project base path; `404.html` links safely back to the project root.
 
-- This repo is public. Never push private LocalAgent application code, SQLite databases, logs, local paths, weights, passwords, tokens, or user data.
-- The site has no cloud LLM or telemetry requirements.
-- The private Windows project remains in `michazaval/LocalAgent`.
-- Everything depicted as an interaction is a **simulation** until real functionality is independently verified and released.
+## QA
+
+Run `npm run build` (static and Node tests) and smoke-check Chromium and Firefox at 320, 390, 768, 1024 and 1440 px. Test language toggle, mobile menu, demo scenarios, animation pause, keyboard focus and links. Browser acceptance remains separate from static tests.

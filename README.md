@@ -17,16 +17,20 @@ npm run build
 
 This creates `dist/` from these files only: `index.html`, `404.html`, `robots.txt`, `assets/main.js`, `assets/styles.css`, `assets/cinematic.css`, and `assets/favicon.svg`.
 
-## Publishing with GitHub Pages
+## GitHub Pages — stable and develop preview
 
-1. Rename the repository from `uniteam-site` to `localagent-site` in **Settings → General → Repository name** (owner action).
-2. In **Settings → Pages**, set the source to **GitHub Actions**.
-3. Review and merge the website PR into `main` **after the rename**, so GitHub Actions validates and deploys the static bundle.
-4. The anticipated URL is `https://michazaval.github.io/localagent-site/` once Pages reports a successful deployment.
+This repository uses two development branches:
 
-Pull requests only validate; they do **not** deploy. Deployment requires `main` on `michazaval/localagent-site`. `github-pages` environment should allow deployments from `main` only.
+- **Stable**: [https://michazaval.github.io/localagent-site/](https://michazaval.github.io/localagent-site/) contains **main** only.
+- **Preview**: [https://michazaval.github.io/localagent-site/preview/](https://michazaval.github.io/localagent-site/preview/) contains the latest successfully verified **develop**.
 
-The original UniTeam site is retained in `archive/uniteam-site-before-localagent`. Renaming a repository does **not** redirect GitHub Pages project-site URLs; the former `/uniteam-site/` link may stop working.
+Workflow: `feature/* → develop → owner QA → main`. Website feature PRs can be merged into `develop` without mandatory third-party review. Promoting `develop` to `main` requires the owner's explicit approval.
+
+On a successful `develop` push check, a privileged **default-branch** workflow rebuilds both folders and publishes one GitHub Pages artifact: allow-listed `main/dist/*` at the root and allow-listed `develop/dist/*` at `preview/`. A `main` push also rebuilds the combined site. Consequently, a `develop` update cannot change the stable site's files. The deployment job alone has `pages: write` and `id-token: write` permissions; previews only run from verified first-party pushes, not pull request events.
+
+Source is **GitHub Actions** in Settings → Pages. The `github-pages` environment may remain limited to `main`, because deployment is initiated by the workflow on the default branch. No additional GitHub tokens or third-party hosting are required.
+
+The UniTeam version is preserved in `archive/uniteam-site-before-localagent`. Pages URLs do not redirect automatically when a repository is renamed.
 
 ## Privacy and security
 

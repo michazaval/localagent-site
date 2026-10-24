@@ -1,0 +1,89 @@
+name: Publish stable and develop preview
+
+on:
+  push:
+    branches: [main]
+  workflow_run:
+    workflows: ["LocalAgent site — validate and publish"]
+    types: [completed]
+    branches: [develop]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: localagent-pages-publish
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build stable and preview together
+    if: >-
+      github.repository == 'michazaval/localagent-site' &&
+      (github.event_name != 'workflow_run' ||
+       (github.event.workflow_run.event == 'push' &&
+        github.event.workflow_run.conclusion == 'success' &&
+        github.event.workflow_run.head_branch == 'develop' &&
+        github.event.workflow_run.head_repository.full_name == github.repository))
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout stable main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: stable
+          persist-credentials: false
+      - name: Checkout develop preview
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || 'develop' }}
+          path: preview-source
+          persist-credentials: false
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Validate and build stable
+        working-directory: stable
+        run: npm run build
+      - name: Validate and build preview
+        working-directory: preview-source
+        run: npm run build
+      - name: Assemble GitHub Pages tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p publish/preview
+          cp -a stable/dist/. publish/
+          cp -a preview-source/dist/. publish/preview/
+          test -f publish/index.html
+          test -f publish/preview/index.html
+          test -f publish/preview/assets/main.js
+          test -f publish/preview/assets/polish.js
+          echo "Stable comes only from main; preview comes only from develop."
+          find publish -type f -print | sort
+      - name: Upload combined site
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: publish
+
+  deploy:
+    name: Deploy both URLs from main workflow
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Publish Pages artifact
+        id: deployment
+        uses: actions/deploy-pages@v4

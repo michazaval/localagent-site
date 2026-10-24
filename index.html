@@ -1,137 +1,131 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#0b1019" />
-  <meta name="color-scheme" content="dark" />
-  <meta name="description" content="UniTeam is an independent personal software project exploring desktop applications, Python automation and AI-assisted development." />
-  <title>UniTeam — Independent Software Project</title>
-  <style>
-    :root {
-      color-scheme: dark;
-      --bg: #0b1019;
-      --panel: #111925;
-      --panel2: #131d2b;
-      --text: #f3f5fa;
-      --muted: #9aa8bd;
-      --border: #273346;
-      --accent: #a7c0ff;
-      --accent-strong: #7098ec;
-      --white: #ffffff;
-      font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      -webkit-font-smoothing: antialiased;
-    }
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; background: var(--bg); }
-    body { margin: 0; min-width: 320px; background: var(--bg); color: var(--text); }
-    a { text-decoration: none; color: inherit; }
-    a:focus-visible { outline: 2px solid var(--accent); outline-offset: 5px; }
-    .container { width: min(1130px, calc(100% - 80px)); margin: 0 auto; }
-    header { height: 88px; border-bottom: 1px solid rgba(171, 196, 230, .13); position: relative; z-index: 1; background: var(--bg); }
-    .nav { display: flex; align-items: center; justify-content: space-between; height: 100%; }
-    .logo { display: inline-flex; align-items: center; gap: 13px; font-size: 23px; font-weight: 750; letter-spacing: -.8px; color: var(--text); }
-    .logo-mark { display: grid; place-items: center; width: 39px; height: 39px; border-radius: 12px; background: #c2d2f5; color: #14253e; font-size: 19px; font-weight: 850; letter-spacing: -1px; }
-    .navlinks { display: flex; align-items: center; gap: 30px; }
-    .navlinks a { font-size: 13px; color: #b8c3d2; font-weight: 600; transition: color .2s ease; }
-    .navlinks a:hover { color: white; }
-    .navlinks .nav-cta { border: 1px solid #34435a; padding: 12px 17px; border-radius: 9px; color: #ecf1fb; }
-    main { position: relative; overflow: hidden; }
-    .hero { min-height: 560px; padding: 110px 0 98px; position: relative; }
-    .hero::before { content: ""; position: absolute; right: -150px; top: -240px; width: 790px; height: 760px; pointer-events: none; background: radial-gradient(ellipse, rgba(43,74,123,.32), transparent 65%); opacity: .82; }
-    .hero-inner { position: relative; display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(300px, .72fr); gap: 60px; align-items: center; }
-    .eyebrow { color: #abc6f2; text-transform: uppercase; letter-spacing: 2.25px; font-size: 11px; font-weight: 800; }
-    .eyebrow::before { content: ""; width: 7px; height: 7px; display: inline-block; background: #a5c6fc; border-radius: 50%; margin-right: 12px; box-shadow: 0 0 17px rgba(151, 189, 248, .45); transform: translateY(-1px); }
-    h1 { max-width: 760px; font-size: clamp(52px, 5.9vw, 81px); line-height: 1.07; letter-spacing: -4px; font-weight: 730; margin: 30px 0 25px; color: #f7f9fe; }
-    h1 em { font-style: normal; color: #acc5ff; }
-    .lead { color: #a8b5c9; font-size: 17px; line-height: 1.8; max-width: 640px; margin: 0; }
-    .actions { display: flex; flex-wrap: wrap; gap: 13px; margin-top: 34px; }
-    .button { border-radius: 9px; padding: 14px 21px; display: inline-flex; gap: 14px; align-items: center; justify-content: center; font-size: 13px; font-weight: 740; border: 1px solid transparent; transition: transform .2s ease, background .2s ease; }
-    .button:hover { transform: translateY(-2px); }
-    .button-primary { color: #142338; background: #c5d6f8; }
-    .button-primary:hover { background: #e2ebff; }
-    .button-secondary { color: #c7d3e6; border-color: #364254; background: rgba(25,36,53,.35); }
-    .button-secondary:hover { background: #1b283a; }
-    .hero-art { position: relative; min-height: 340px; display: flex; align-items: center; justify-content: center; }
-    .orbit { position: relative; width: 320px; height: 320px; border: 1px solid rgba(140,173,229,.19); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
-    .orbit::before { content: ""; position: absolute; inset: 43px; border: 1px solid rgba(170,198,239,.22); border-radius: 50%; }
-    .orbit::after { content: ""; position: absolute; inset: 86px; background: radial-gradient(circle at 31% 26%, #314d77, #1a2941 68%); border: 1px solid #405474; box-shadow: 0 0 95px 10px rgba(65,98,159,.23); border-radius: 36px; transform: rotate(18deg); }
-    .orbit-letter { position: relative; z-index: 1; font-size: 71px; font-weight: 790; color: #d6e4fc; letter-spacing: -9px; padding-right: 9px; }
-    .satellite { position: absolute; width: 10px; height: 10px; background: #acc7f8; border: 3px solid var(--bg); border-radius: 50%; box-shadow: 0 0 0 1px #8ca9db; }
-    .satellite.a { top: 35px; left: 52px; }
-    .satellite.b { bottom: 62px; right: 19px; width: 8px; height: 8px; }
-    .art-label { position: absolute; color: #7488a8; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
-    .art-label.t { top: -5px; right: 5px; }
-    .art-label.b { bottom: 0; left: 0; }
-    .rule { border-top: 1px solid #273345; }
-    .section { padding: 83px 0 92px; }
-    .section-heading { display: flex; justify-content: space-between; align-items: end; gap: 26px; margin-bottom: 34px; }
-    .section-heading h2 { color: #f2f5fa; font-size: clamp(31px, 3.5vw, 44px); line-height: 1.16; letter-spacing: -1.7px; font-weight: 710; margin: 15px 0 0; }
-    .section-heading p { font-size: 14px; line-height: 1.75; max-width: 390px; color: #96a6bd; margin: 0 0 4px; }
-    .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
-    .card { min-height: 244px; background: linear-gradient(160deg, #151f2d, #111924); border: 1px solid #2b394c; border-radius: 15px; padding: 27px 27px 29px; }
-    .card-top { display: flex; align-items: center; justify-content: space-between; }
-    .card-icon { width: 40px; height: 40px; display: grid; place-items: center; border: 1px solid #455977; border-radius: 11px; color: #bfd3f9; font-size: 20px; line-height: 1; }
-    .num { color: #7489a9; letter-spacing: 1.1px; font-size: 11px; font-weight: 700; }
-    .card h3 { font-size: 18px; font-weight: 690; letter-spacing: -.4px; margin: 28px 0 9px; color: #edf2fa; }
-    .card p { font-size: 14px; line-height: 1.7; color: #9caac0; margin: 0; }
-    .about { background: #0e1621; border-top: 1px solid #273345; border-bottom: 1px solid #273345; }
-    .about-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 90px; align-items: center; padding: 70px 0; }
-    .about h2 { font-size: clamp(28px, 3vw, 39px); font-weight: 700; letter-spacing: -1.3px; margin: 14px 0 0; line-height: 1.2; }
-    .about p { line-height: 1.8; color: #a6b3c8; font-size: 15px; margin: 0; }
-    footer { padding: 31px 0 38px; color: #8091aa; font-size: 12px; }
-    .footer-inner { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
-    @media(max-width: 890px){ .hero-inner { grid-template-columns: 1fr; gap: 45px; }.hero { padding: 86px 0 75px; }.hero-art { min-height: 200px; display: none; }.section-heading { align-items: start; flex-direction: column; }.about-inner { gap: 30px; } }
-    @media(max-width: 660px){ .container { width: calc(100% - 40px); } header { height: 72px; } .logo { font-size: 21px; }.logo-mark { width: 36px; height: 36px; } .navlinks { gap: 16px; }.navlinks .hide-mobile { display: none; }.navlinks .nav-cta { padding: 10px 12px; }.hero { padding: 75px 0 78px; min-height: auto; } h1 { font-size: clamp(44px, 11vw, 64px); letter-spacing: -2.3px; } .lead { font-size: 15px; } .grid { grid-template-columns: 1fr; }.card { min-height: 205px; } .section { padding: 65px 0 75px; } .section-heading h2 { font-size: 34px; } .about-inner { grid-template-columns: 1fr; padding: 61px 0; } }
-    @media(prefers-reduced-motion:reduce) { html {scroll-behavior:auto;} .button {transition:none;} }
-  </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#141614" />
+  <meta name="description" content="LocalAgent is an independent Windows AI assistant in development, designed around local models, user control, memory, and practical automation." />
+  <meta property="og:title" content="LocalAgent — AI on your terms" />
+  <meta property="og:description" content="An independent Windows AI assistant in development. Local-first by design." />
+  <meta property="og:type" content="website" />
+  <meta name="color-scheme" content="dark light" />
+  <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="./assets/styles.css" />
+  <link rel="stylesheet" href="./assets/cinematic.css" />
+  <title>LocalAgent — Intelligence on your terms</title>
+  <script src="./assets/main.js" defer></script>
 </head>
 <body>
-  <header>
-    <div class="container nav">
-      <a class="logo" href="#top" aria-label="UniTeam home"><span class="logo-mark">U</span>UniTeam</a>
-      <nav class="navlinks" aria-label="Main navigation">
-        <a href="#focus" class="hide-mobile">Focus</a>
-        <a href="#about" class="hide-mobile">About</a>
-        <a class="nav-cta" href="https://github.com/michazaval" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
-      </nav>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="scroll-progress" aria-hidden="true"><span id="scrollProgress"></span></div>
+  <header class="site-header" id="top">
+    <a class="brand" href="#top" aria-label="LocalAgent — home">
+      <svg class="brand-icon" viewBox="0 0 44 44" fill="none" aria-hidden="true">
+        <path d="M4 4v36h36" stroke="currentColor" stroke-width="3"/>
+        <path d="M14 30V14h16" stroke="currentColor" stroke-width="3"/>
+        <circle cx="31" cy="14" r="5" fill="currentColor"/>
+      </svg>
+      <span>LOCAL<span class="brand-slash">/</span>AGENT</span>
+    </a>
+    <nav class="nav" id="navigation" aria-label="Main navigation">
+      <a href="#approach" data-i18n="navApproach">THE IDEA</a>
+      <a href="#experience" data-i18n="navDemo">EXPERIENCE</a>
+      <a href="#roadmap" data-i18n="navRoadmap">ROADMAP</a>
+      <a href="#availability" data-i18n="navRelease">RELEASE</a>
+    </nav>
+    <div class="header-actions">
+      <button class="language-switch" type="button" id="langToggle" aria-label="Switch language to Russian">RU <span aria-hidden="true">↗</span></button>
+      <a class="header-cta" href="#experience"><span data-i18n="navExplore">EXPLORE</span><span aria-hidden="true">↗</span></a>
+      <button class="menu-toggle" type="button" id="menuToggle" aria-label="Open navigation" aria-expanded="false" aria-controls="navigation"><span></span><span></span></button>
     </div>
   </header>
-  <main id="top">
-    <section class="hero">
-      <div class="container hero-inner">
-        <div>
-          <div class="eyebrow">Independent software project</div>
-          <h1>Ideas into<br /><em>useful software.</em></h1>
-          <p class="lead">UniTeam is a personal development project exploring software engineering, smart automation and practical uses of AI. A space to experiment, learn and build things that matter.</p>
-          <div class="actions">
-            <a class="button button-primary" href="https://github.com/michazaval" target="_blank" rel="noopener noreferrer">Explore GitHub <span aria-hidden="true">↗</span></a>
-            <a class="button button-secondary" href="#focus">What I work on <span aria-hidden="true">↓</span></a>
+
+  <main id="main">
+    <section class="hero dark-section" aria-labelledby="hero-heading">
+      <div class="hero-topline section-container">
+        <p class="eyebrow"><span class="signal-dot" aria-hidden="true"></span><span data-i18n="heroEyebrow">INDEPENDENT WINDOWS AI · IN DEVELOPMENT</span></p>
+        <p class="micro">[ PROJECT / 001 ]</p>
+      </div>
+      <div class="hero-layout section-container">
+        <div class="hero-copy">
+          <div class="hero-ruler"><span>LOCAL INTELLIGENCE</span><span>↘ 01</span></div>
+          <h1 id="hero-heading" class="hero-title"><span data-i18n="heroLine1">YOUR</span><span class="outlined" data-i18n="heroLine2">SPACE.</span><span><span data-i18n="heroLine3">YOUR AI</span><span class="lime-period">.</span></span></h1>
+          <div class="hero-bottom">
+            <p class="hero-description" data-i18n="heroDesc">We're building a Windows assistant that can think, remember and act on your machine — with local models at its core.</p>
+            <a href="#approach" class="round-arrow" aria-label="Discover LocalAgent"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6"/></svg></a>
+          </div>
+          <p class="hero-footnote"><span class="mini-line"></span><span data-i18n="heroFootnote">NOT A CLOUD CHATBOT. NOT A WEB APP.</span></p>
+        </div>
+        <div class="hero-visual" id="fieldContainer">
+          <div class="field-frame" id="fieldFrame">
+            <div class="scene-fallback" aria-hidden="true"></div>
+            <canvas id="signalCanvas" role="img" aria-label="Decorative animated signal beam, ground halo and floating particles. Appearance changes with the selected state"></canvas>
+            <span class="field-corner corner-tl" aria-hidden="true">+</span><span class="field-corner corner-tr" aria-hidden="true">+</span><span class="field-corner corner-bl" aria-hidden="true">+</span><span class="field-corner corner-br" aria-hidden="true">+</span>
+            <div class="field-coordinates"><span>LA / SIGNAL CHAMBER</span><span class="field-coord-value">NODE / 001</span></div>
+            <div class="field-center-type" aria-hidden="true"><span>HUMAN</span><span class="field-center-symbol">↔</span><span>MACHINE</span></div>
+            <div class="field-bottom-data"><span class="field-breath" id="stateText">SIGNAL: IDLE</span><span id="fieldCounter">PARTICLES / 064</span></div>
+          </div>
+          <div class="field-controls" aria-label="Interactive visual states">
+            <span class="controls-caption" data-i18n="controlsCaption">TRY A STATE</span>
+            <div class="control-buttons" role="group" aria-label="Signal states">
+              <button class="state-btn is-active" type="button" data-state="idle" aria-pressed="true" data-i18n="stateIdle">IDLE</button>
+              <button class="state-btn" type="button" data-state="think" aria-pressed="false" data-i18n="stateThink">THINK</button>
+              <button class="state-btn" type="button" data-state="listen" aria-pressed="false" data-i18n="stateListen">LISTEN</button>
+              <button class="state-btn" type="button" data-state="act" aria-pressed="false" data-i18n="stateAct">ACT</button>
+            </div>
+          </div>
+          <p class="visual-footnote" data-i18n="heroVizNote">AN INTERACTIVE VISUAL CONCEPT — NOT A LIVE AGENT SESSION.</p>
+        </div>
+      </div>
+      <div class="hero-bottom-strip" aria-hidden="true"><span>VISUAL SIMULATION / NO LIVE SESSION</span><span>SCROLL TO EXPLORE <strong>↓</strong></span></div>
+    </section>
+
+    <section class="manifesto section-light" id="approach" aria-labelledby="manifesto-heading">
+      <div class="section-container">
+        <div class="section-heading"><span class="section-index">[ 02 / THE IDEA ]</span><span class="section-side-note" data-i18n="manifestoSide">BUILT DIFFERENT BY DESIGN</span></div>
+        <h2 class="manifesto-statement reveal" id="manifesto-heading"><span data-i18n="manifestoLine1">AI SHOULD FEEL</span><br><em data-i18n="manifestoLine2">CLOSER.</em> <span data-i18n="manifestoLine3">NOT</span><br><span data-i18n="manifestoLine4">MORE DISTANT.</span></h2>
+        <div class="manifesto-detail reveal"><p class="section-kicker" data-i18n="manifestoKicker">A MORE PERSONAL RELATIONSHIP WITH COMPUTING.</p><p data-i18n="manifestoText">Most assistants live somewhere else. LocalAgent is being designed around the computer in front of you: local inference, useful context, and permission-based actions. It's an ambition we're building toward, not a claim that every feature is available today.</p></div>
+      </div>
+      <div class="ticker" aria-hidden="true"><div class="ticker-inner"><span>LOCAL FIRST ✳ HUMAN CONTROL ✳ WINDOWS NATIVE ✳ YOUR WORKFLOW ✳</span><span>LOCAL FIRST ✳ HUMAN CONTROL ✳ WINDOWS NATIVE ✳ YOUR WORKFLOW ✳</span></div></div>
+    </section>
+
+    <section class="capabilities section-light" aria-labelledby="capabilities-heading">
+      <div class="section-container">
+        <div class="section-heading"><span class="section-index">[ 03 / BUILDING BLOCKS ]</span><span class="section-side-note" data-i18n="capabilitiesSide">AN ASSISTANT, NOT JUST A CHAT WINDOW</span></div>
+        <div class="capabilities-head"><h2 id="capabilities-heading" data-i18n="capabilitiesTitle">MORE THAN<br>ANSWERS<span class="period-dark">.</span></h2><p data-i18n="capabilitiesIntro">Four connected ideas are shaping the product. Each module moves through development and independent acceptance before it can be called ready.</p></div>
+        <div class="capability-list">
+          <article class="capability-item reveal"><span class="cap-number">01</span><div class="cap-content"><h3 data-i18n="cap1Title">LOCAL REASONING</h3><p data-i18n="cap1Text">Run language models on supported Windows hardware instead of relying on a cloud model for core responses.</p></div><span class="cap-status" data-i18n="statusDevelopment">IN DEVELOPMENT</span><span class="cap-arrow" aria-hidden="true">↗</span></article>
+          <article class="capability-item reveal"><span class="cap-number">02</span><div class="cap-content"><h3 data-i18n="cap2Title">MEMORY WITH CONTROL</h3><p data-i18n="cap2Text">Useful context and task history, with clear controls for what gets stored and what can be removed.</p></div><span class="cap-status" data-i18n="statusIntegration">INTEGRATION WORK</span><span class="cap-arrow" aria-hidden="true">↗</span></article>
+          <article class="capability-item reveal"><span class="cap-number">03</span><div class="cap-content"><h3 data-i18n="cap3Title">ACTIONS THAT MATTER</h3><p data-i18n="cap3Text">Browser workflows, reusable skills and Windows actions — with permissions, stop controls and verifiable results.</p></div><span class="cap-status" data-i18n="statusDevelopment">IN DEVELOPMENT</span><span class="cap-arrow" aria-hidden="true">↗</span></article>
+          <article class="capability-item reveal"><span class="cap-number">04</span><div class="cap-content"><h3 data-i18n="cap4Title">A NATURAL INTERFACE</h3><p data-i18n="cap4Text">A native desktop experience with voice as an optional layer, not a requirement for getting things done.</p></div><span class="cap-status" data-i18n="statusPlanned">PLANNED / TESTING</span><span class="cap-arrow" aria-hidden="true">↗</span></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="experience dark-section" id="experience" aria-labelledby="experience-heading">
+      <div class="section-container">
+        <div class="section-heading"><span class="section-index">[ 04 / EXPERIENCE ]</span><span class="section-side-note" data-i18n="experienceSide">INTERACTION CONCEPT / CLICK TO EXPLORE</span></div>
+        <div class="experience-layout">
+          <div class="experience-copy reveal"><h2 id="experience-heading" data-i18n="experienceTitle">WHAT IF<br>YOUR PC<br><em>COULD HELP?</em></h2><p data-i18n="experienceDesc">Choose a scenario. See how an assistant might break an instruction into steps. This is an illustrative prototype, not a connected LocalAgent runtime.</p><div class="demo-scenarios" role="group" aria-label="Illustrative task scenarios"><button type="button" class="scenario-button selected" data-scenario="browse" aria-pressed="true"><span>01</span><span data-i18n="demoBrowse">EXPLORE A WEB PAGE</span><span aria-hidden="true">↗</span></button><button type="button" class="scenario-button" data-scenario="memory" aria-pressed="false"><span>02</span><span data-i18n="demoMemory">RECALL CONTEXT</span><span aria-hidden="true">↗</span></button><button type="button" class="scenario-button" data-scenario="windows" aria-pressed="false"><span>03</span><span data-i18n="demoWindows">DESKTOP WORKFLOW</span><span aria-hidden="true">↗</span></button></div></div>
+          <div class="demo-shell reveal" aria-label="Concept simulation of assistant task steps">
+            <div class="demo-titlebar"><div class="window-dots" aria-hidden="true"><span></span><span></span><span></span></div><span>LOCALAGENT / PROTOTYPE</span><span class="window-badge" data-i18n="demoBadge">SIMULATION</span></div>
+            <div class="demo-body"><div class="demo-channel"><span class="signal-dot" aria-hidden="true"></span><span data-i18n="demoChannel">CONCEPT PREVIEW</span><span>↗ 2026</span></div><p class="demo-prefix">&gt; <span data-i18n="demoRequestLabel">EXAMPLE REQUEST</span></p><h3 class="demo-prompt" id="demoPrompt" aria-live="polite">Find the most useful information on this page and give me a summary.</h3><div class="demo-divider"></div><p class="demo-prefix demo-steps-title"><span data-i18n="demoPlanLabel">POSSIBLE TASK FLOW</span><span id="demoStepCount">03 STEPS</span></p><ol class="demo-steps" id="demoSteps"><li><span>01</span><p>Check the page and identify relevant content</p><span class="step-indicator" aria-hidden="true">↗</span></li><li><span>02</span><p>Extract key facts while respecting access limits</p><span class="step-indicator" aria-hidden="true">↗</span></li><li><span>03</span><p>Return a clear summary with source context</p><span class="step-indicator" aria-hidden="true">↗</span></li></ol><div class="demo-notice"><span aria-hidden="true">ⓘ</span><span data-i18n="demoNotice">ILLUSTRATION ONLY. NO REAL TASK IS EXECUTED.</span></div></div>
+            <div class="demo-footer"><span data-i18n="demoFooterLeft">DESIGNED FOR PERMISSION-BASED ACTIONS</span><span class="blink-cursor" aria-hidden="true">_</span></div>
           </div>
         </div>
-        <div class="hero-art" aria-hidden="true">
-          <span class="art-label t">BUILD / 001</span>
-          <div class="orbit"><span class="orbit-letter">U</span><span class="satellite a"></span><span class="satellite b"></span></div>
-          <span class="art-label b">LEARN — CREATE — IMPROVE</span>
-        </div>
       </div>
     </section>
-    <div class="container"><div class="rule"></div></div>
-    <section class="section container" id="focus" aria-labelledby="focus-title">
-      <div class="section-heading">
-        <div><div class="eyebrow">Areas of interest</div><h2 id="focus-title">What I work on</h2></div>
-        <p>Hands-on software development with an emphasis on useful tools, straightforward design and continuous learning.</p>
-      </div>
-      <div class="grid">
-        <article class="card"><div class="card-top"><span class="card-icon" aria-hidden="true">⌘</span><span class="num">01 / SOFTWARE</span></div><h3>Application development</h3><p>Exploring desktop applications, intuitive interfaces and maintainable code.</p></article>
-        <article class="card"><div class="card-top"><span class="card-icon" aria-hidden="true">⚙</span><span class="num">02 / AUTOMATION</span></div><h3>Automation &amp; tools</h3><p>Building Python-based workflows that make repetitive processes simpler.</p></article>
-        <article class="card"><div class="card-top"><span class="card-icon" aria-hidden="true">✳</span><span class="num">03 / AI</span></div><h3>AI-assisted engineering</h3><p>Learning how modern AI systems support coding, analysis and testing.</p></article>
-      </div>
+
+    <section class="architecture section-light" id="architecture" aria-labelledby="architecture-heading">
+      <div class="section-container"><div class="section-heading"><span class="section-index">[ 05 / PRINCIPLE ]</span><span class="section-side-note" data-i18n="archSide">LOCAL BY DESIGN</span></div><div class="architecture-grid"><div class="architecture-copy reveal"><h2 id="architecture-heading" data-i18n="archTitle">THE CENTER<br>IS <em>YOU.</em></h2><p data-i18n="archText">The goal is simple: keep core intelligence and remembered context on your machine. Online access can still be used when you ask the assistant to work with the web.</p><p class="arch-disclaimer" data-i18n="archDisclaimer">Architecture illustration; component availability depends on development, hardware and user permissions.</p></div><div class="architecture-map reveal" role="img" aria-label="Conceptual architecture: user controls a Windows app connecting to local model, local memory, and permission-based tools"><div class="architecture-top"><span>DEVICE / WINDOWS</span><span>BOUNDARY_01</span></div><div class="architecture-central"><span class="architecture-cross" aria-hidden="true">✳</span><strong>LOCALAGENT</strong><small data-i18n="archCore">USER CONTROL LAYER</small></div><div class="architecture-lines" aria-hidden="true"><span></span><span></span><span></span></div><div class="architecture-nodes"><div><span>01</span><strong data-i18n="archNode1">LOCAL MODEL</strong><small>INFERENCE</small></div><div><span>02</span><strong data-i18n="archNode2">MEMORY</strong><small>ON DEVICE</small></div><div><span>03</span><strong data-i18n="archNode3">TOOLS</strong><small>PERMISSIONS</small></div></div><p class="architecture-caption">CLOUD AI REQUIRED <strong>NO*</strong><span>* <span data-i18n="archCaveat">for core inference as designed</span></span></p></div></div></div>
     </section>
-    <section class="about" id="about" aria-labelledby="about-title"><div class="container about-inner"><div><div class="eyebrow">About UniTeam</div><h2 id="about-title">Small project.<br />Long-term curiosity.</h2></div><p>UniTeam is an independently run personal technology project, not a registered company. Its purpose is educational experimentation, personal software development and the exploration of emerging tools.</p></div></section>
+
+    <section class="roadmap section-light" id="roadmap" aria-labelledby="roadmap-heading"><div class="section-container"><div class="section-heading"><span class="section-index">[ 06 / THE JOURNEY ]</span><span class="section-side-note" data-i18n="roadmapSide">BUILDING TOWARDS A REAL RELEASE</span></div><div class="roadmap-header reveal"><h2 id="roadmap-heading" data-i18n="roadmapTitle">WORK IN<br>PROGRESS<span class="period-dark">.</span></h2><p data-i18n="roadmapIntro">A public-facing overview, not a live sync of private engineering work. No release date is promised until the Windows build passes acceptance.</p></div><ol class="roadmap-timeline"><li class="roadmap-row reveal"><span class="roadmap-index">01 /</span><span class="roadmap-marker"><span></span></span><div><h3 data-i18n="roadmap1">FOUNDATION</h3><p data-i18n="roadmap1Desc">Architecture, local model runtime and the desktop shell.</p></div><span class="roadmap-state" data-i18n="roadmapStatus1">DEVELOPING</span></li><li class="roadmap-row reveal"><span class="roadmap-index">02 /</span><span class="roadmap-marker"><span></span></span><div><h3 data-i18n="roadmap2">USEFUL WINDOWS MVP</h3><p data-i18n="roadmap2Desc">Repeatable startup, one end-to-end scenario, safe cancel and clear errors.</p></div><span class="roadmap-state" data-i18n="roadmapStatus2">VALIDATION</span></li><li class="roadmap-row reveal"><span class="roadmap-index">03 /</span><span class="roadmap-marker"><span></span></span><div><h3 data-i18n="roadmap3">DEEPER CAPABILITIES</h3><p data-i18n="roadmap3Desc">Memory, skills, voice and Windows automation as their acceptance gates pass.</p></div><span class="roadmap-state is-muted" data-i18n="roadmapStatus3">IN DEVELOPMENT</span></li><li class="roadmap-row reveal"><span class="roadmap-index">04 /</span><span class="roadmap-marker"><span></span></span><div><h3 data-i18n="roadmap4">LOCALAGENT 1.0</h3><p data-i18n="roadmap4Desc">Verified release candidate, real-device testing and owner approval.</p></div><span class="roadmap-state is-muted" data-i18n="roadmapStatus4">NOT RELEASED</span></li></ol><p class="roadmap-footnote" data-i18n="roadmapFootnote">The roadmap is intentionally conservative: planned features are not advertised as shipping features.</p></div></section>
+
+    <section class="availability" id="availability" aria-labelledby="availability-heading"><div class="section-container availability-content reveal"><p class="availability-label"><span class="dark-dot" aria-hidden="true"></span><span data-i18n="availEyebrow">STATUS / STILL BUILDING</span></p><h2 id="availability-heading" data-i18n="availTitle">NOT READY<br>TO DOWNLOAD<span>.</span><br><em>WORTH BUILDING.</em></h2><div class="availability-bottom"><p data-i18n="availDesc">LocalAgent 1.0 isn't published yet. The official Windows download will appear here only after a tested release is approved.</p><span class="availability-stamp" data-i18n="availStamp">RELEASE<br>PENDING ↗</span></div></div></section>
   </main>
-  <footer><div class="container footer-inner"><span>© 2026 UniTeam · Independent personal project</span><span>Built with curiosity and care.</span></div></footer>
+
+  <footer class="footer dark-section"><div class="section-container"><div class="footer-top"><span data-i18n="footerTag">LOCAL INTELLIGENCE. HUMAN DECISIONS.</span><a href="#top" class="back-top"><span data-i18n="footerBack">BACK TO TOP</span> ↑</a></div><div class="footer-wordmark" aria-label="LOCALAGENT">LOCAL<span>/</span>AGENT</div><div class="footer-bottom"><span>© <span id="year">2026</span> LOCALAGENT</span><span data-i18n="footerIndependent">INDEPENDENT PROJECT · WINDOWS · IN DEVELOPMENT</span><span>DESIGNED TO STAY CLOSE.</span></div></div></footer>
 </body>
 </html>

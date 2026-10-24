@@ -188,8 +188,9 @@ window.addEventListener('resize', () => { if (window.innerWidth > 900) closeMenu
 document.querySelector('#year').textContent = String(new Date().getFullYear());
 
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+const motionPaused = () => reducedMotion.matches || document.documentElement.classList.contains('motion-paused');
 const revealElements = document.querySelectorAll('.reveal');
-if ('IntersectionObserver' in window && !reducedMotion.matches) {
+if ('IntersectionObserver' in window && !motionPaused()) {
   const revealObserver = new IntersectionObserver((entries, observer) => {
     for (const entry of entries) if (entry.isIntersecting) {
       entry.target.classList.add('is-visible');
@@ -225,7 +226,7 @@ if (context) {
     canvas.width = Math.floor(width * dpr); canvas.height = Math.floor(height * dpr);
     context.setTransform(dpr, 0, 0, dpr, 0, 0);
     makeNodes();
-    if (reducedMotion.matches) draw(0);
+    if (motionPaused()) draw(0);
   }
   function draw(time) {
     context.clearRect(0, 0, width, height);
@@ -351,13 +352,13 @@ if (context) {
   }
   function tick(now) {
     animationId = 0;
-    if (!visible || document.hidden || reducedMotion.matches) return;
+    if (!visible || document.hidden || motionPaused()) return;
     if (now - lastPaint >= 32) { draw(now); lastPaint = now; }
     animationId = requestAnimationFrame(tick);
   }
   function start() {
-    if (!animationId && visible && !document.hidden && !reducedMotion.matches) animationId = requestAnimationFrame(tick);
-    else if (reducedMotion.matches) draw(0);
+    if (!animationId && visible && !document.hidden && !motionPaused()) animationId = requestAnimationFrame(tick);
+    else if (motionPaused()) draw(0);
   }
   function stop() { if (animationId) cancelAnimationFrame(animationId); animationId = 0; }
   fieldFrame.addEventListener('pointermove', event => {
@@ -375,6 +376,10 @@ if (context) {
     fieldObserver.observe(fieldFrame);
   }
   reducedMotion.addEventListener('change', event => { if (event.matches) { stop(); draw(0); } else start(); });
+  document.addEventListener('localagent:motion-change', () => {
+    if (motionPaused()) { stop(); draw(0); }
+    else start();
+  });
   if ('ResizeObserver' in window) new ResizeObserver(resizeCanvas).observe(fieldFrame);
   else window.addEventListener('resize', resizeCanvas);
   resizeCanvas(); start();

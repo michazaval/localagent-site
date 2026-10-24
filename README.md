@@ -13,11 +13,17 @@ npm run build
 
 The explicit `dist/` allow-list includes `index.html`, `404.html`, `robots.txt` and six local assets (`styles.css`, `cinematic.css`, `polish.css`, `main.js`, `polish.js`, `favicon.svg`). No other repository content is published.
 
-## GitHub Pages
+## GitHub Pages (two URLs)
 
-The repository was renamed to `michazaval/localagent-site` and the previous UniTeam version is preserved at `archive/uniteam-site-before-localagent`. GitHub Pages is configured to build using GitHub Actions. Development process: `feature/* → develop → main`. The site implementer merges verified feature PRs into `develop` without a mandatory separate review. The owner checks the update from `develop` (for example by running the site locally or viewing a PR preview artifact); **only after explicit owner approval** is `develop` merged into `main`. Pushes and pull requests targeting `develop` run CI but do **not** deploy. A push to `main` builds and publishes only `dist/` to `https://michazaval.github.io/localagent-site/`. GitHub Pages shows **`main` only**, not `develop`.
+The old UniTeam version is retained in `archive/uniteam-site-before-localagent`. Pages is configured to use GitHub Actions, and the project has two URLs:
 
-On pull requests and pushes to `develop`, only validation runs. For deployment, the workflow grants `pages: write` and `id-token: write` in the deployment job, not the PR build. Keep the `github-pages` environment restricted to `main`.
+- **Stable `main`**: https://michazaval.github.io/localagent-site/
+- **Preview `develop`**: https://michazaval.github.io/localagent-site/preview/
+
+Workflow: `feature/* → develop → owner QA → main`. A feature PR may merge into `develop` after checks without mandatory independent review. Only an explicit owner-approved release updates `main`.
+
+A successful first-party `develop` CI push triggers a publishing workflow on the default branch. The workflow verifies and builds `main` into the website root and the passing `develop` SHA into `preview/`, then uploads a single allow-listed static artifact. The stable site is never replaced by develop's content. The Pages deploy job runs on `main` and alone has Pages and OIDC write permissions. No extra secrets or hosting services are needed.
+
 
 ## Product and security boundaries
 

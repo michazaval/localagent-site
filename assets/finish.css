@@ -1,0 +1,132 @@
+/* LocalAgent / Finish pass: optical polish, motion language, precise UI details.
+   No remote assets, fonts or dependencies. */
+:root{
+ --line-faint:rgba(195,228,196,.18);
+ --line-strong:rgba(196,237,181,.43);
+ --ease-cinema:cubic-bezier(.22,1,.36,1);
+}
+html{scroll-padding-top:90px}
+body{font-feature-settings:"kern" 1,"liga" 1;text-rendering:optimizeLegibility}
+.hero-title,.manifesto-statement,.capabilities-head h2,.experience-copy h2,
+.architecture-copy h2,.roadmap-header h2,.availability-content h2{
+  font-kerning:normal;text-wrap:balance;
+}
+.hero-title{letter-spacing:-.069em}
+.hero-description,.experience-copy>p,.architecture-copy>p:not(.arch-disclaimer),
+.cap-content p,.roadmap-row p,.manifesto-detail>p:last-child{
+  -webkit-font-smoothing:antialiased;
+}
+.site-header{border-bottom:1px solid var(--line-faint)}
+.site-header .brand-icon{transition:transform .7s var(--ease-cinema),filter .7s ease}
+.brand:hover .brand-icon{transform:rotate(-12deg) scale(1.035);filter:drop-shadow(0 0 14px rgba(177,248,126,.3))}
+.header-cta,.state-btn,.scenario-button,.motion-toggle,
+.language-switch,.round-arrow{transition-timing-function:var(--ease-cinema)}
+.nav a{color:#d6dfd2}
+.nav a::after{height:2px;border-radius:2px}
+.nav a[aria-current="location"]{color:var(--acid)}
+.nav a[aria-current="location"]::after{width:100%}
+.field-coordinates,.field-bottom-data,.section-side-note,.section-index,
+.controls-caption,.hero-footnote,.hero-bottom-strip{
+  font-size:clamp(10px,.78vw,12px);
+  letter-spacing:.10em;
+}
+.field-coordinates{color:#c4d5be}
+.field-coord-value{color:#b9fa83}
+.signal-insight{color:#e3f1dc;border-color:rgba(185,241,155,.4)}
+.signal-insight::before{width:6px;height:6px;box-shadow:0 0 14px rgba(185,255,144,.48)}
+.field-frame{contain:paint}
+.field-frame::after{opacity:.085;transition:opacity .5s ease}
+.field-frame:hover::after{opacity:.13}
+.field-frame[data-state="think"]{--frame-glow:rgba(249,190,105,.17)}
+.field-frame[data-state="listen"]{--frame-glow:rgba(132,236,206,.17)}
+.field-frame[data-state="act"]{--frame-glow:rgba(248,211,125,.18)}
+.field-frame[data-state="idle"]{--frame-glow:rgba(164,250,106,.15)}
+.field-frame::before{
+  background:
+    radial-gradient(ellipse 32% 44% at 73% 56%,var(--frame-glow,rgba(164,250,106,.15)),transparent 84%),
+    linear-gradient(90deg,#08100b 0%,rgba(8,16,11,.98) 22%,rgba(8,16,11,.20) 61%,transparent 89%);
+  transition:background-color .45s ease;
+}
+.field-controls{border-color:var(--line-strong);border-radius:5px}
+.state-btn{position:relative;overflow:hidden;border-radius:3px}
+.state-btn:active{transform:scale(.96)}
+.state-btn.is-active{box-shadow:inset 0 -2px 0 rgba(19,40,18,.25),0 0 26px rgba(171,250,118,.15)}
+.state-btn:not(.is-active):hover{background:rgba(187,248,115,.095)}
+.state-btn:focus-visible,.motion-toggle:focus-visible{
+  outline:2px solid #eeffcf;outline-offset:3px
+}
+.hero-topline .eyebrow{color:#dde9d6}
+.hero-bottom-strip{color:#c1d0ba}
+.hero-bottom-strip strong{font-weight:650}
+.section-heading{border-color:rgba(38,55,36,.22)}
+.section-light .section-heading .section-index{color:#3c4e3e}
+.section-side-note{color:inherit;opacity:.64}
+.capability-item{transition:padding-left .55s var(--ease-cinema),background .4s ease}
+.cap-content h3{letter-spacing:-.045em;text-wrap:balance}
+.capability-item:hover{background:rgba(177,210,152,.095)}
+.cap-arrow{transition:transform .45s var(--ease-cinema)}
+.capability-item:hover .cap-arrow{transform:translate(6px,-5px)}
+.cap-status{font-weight:680;letter-spacing:.075em}
+.scenario-button{min-height:68px;transition:padding-left .44s var(--ease-cinema),color .3s}
+.scenario-button.selected{background:linear-gradient(90deg,rgba(180,252,115,.05),transparent 70%)}
+.demo-shell{box-shadow:0 24px 84px rgba(0,0,0,.24);border-color:rgba(165,211,154,.32)}
+.demo-prompt{font-weight:580;letter-spacing:-.028em}
+.demo-steps li{transition:background-color .25s ease}
+.demo-steps li:hover{background:rgba(170,247,119,.045)}
+.demo-notice{color:#dbe9d5}
+.architecture-map{transition:box-shadow .6s ease;border-color:#a6bba3}
+.architecture-map:hover{box-shadow:0 30px 84px rgba(38,58,36,.16)}
+.architecture-central{
+  box-shadow:0 20px 58px rgba(20,50,30,.24),inset 0 1px 0 rgba(203,255,177,.12);
+  transition:box-shadow .6s ease;
+}
+.architecture-central:hover{
+  box-shadow:0 27px 70px rgba(20,50,30,.3),inset 0 1px 0 rgba(203,255,177,.2)
+}
+.architecture-bus::before,.architecture-bus::after{
+  background:linear-gradient(90deg,#7ba970,#4d7752 55%,#7ba970);
+}
+.architecture-bus::before{background:linear-gradient(180deg,#77aa71,#4d7752)}
+.architecture-bus span{background:#648f69}
+.architecture-bus span::after{box-shadow:0 0 0 3px rgba(143,204,127,.13)}
+.architecture-nodes>div{
+  transition:transform .55s var(--ease-cinema),border-color .35s,box-shadow .55s;
+  border-color:#9cad98;
+}
+.architecture-nodes>div:hover{
+  transform:translateY(-5px);
+  border-color:#619360;
+  box-shadow:0 16px 38px rgba(33,60,38,.1);
+}
+.architecture-nodes strong{line-height:1.24}
+.architecture-caption{color:#456342}
+.roadmap-row{transition:background .35s ease}
+.roadmap-row:hover{background:rgba(143,181,126,.06)}
+.roadmap-state{font-weight:700}
+.footer a{transition:color .35s ease}
+.footer a:hover{color:var(--acid)}
+@media(max-width:900px){
+  .field-frame::before{background:
+    radial-gradient(ellipse 35% 45% at 75% 60%,var(--frame-glow,rgba(164,250,106,.15)),transparent 80%),
+    linear-gradient(90deg,rgba(8,16,11,.96),rgba(8,16,11,.5) 56%,transparent)}
+  .architecture-nodes>div:hover{transform:none}
+}
+@media(max-width:580px){
+  .hero-title{letter-spacing:-.069em}
+  .field-frame::before{background:
+    radial-gradient(ellipse 45% 36% at 66% 72%,var(--frame-glow,rgba(164,250,106,.15)),transparent 80%),
+    linear-gradient(180deg,#08100b 0%,rgba(8,16,11,.76) 36%,transparent 68%)}
+  .field-coordinates,.field-bottom-data{font-size:10px}
+  .section-index,.section-side-note{font-size:10px;letter-spacing:.07em}
+  .state-btn{min-height:44px;font-size:10px}
+  .cap-content h3{line-height:1.08}
+  .architecture-map{box-shadow:none}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{scroll-behavior:auto!important}
+  .brand-icon,.capability-item,.cap-arrow,.state-btn,.architecture-map,
+  .architecture-central,.architecture-nodes>div{transition:none!important}
+}
+html.motion-paused .brand-icon,
+html.motion-paused .architecture-nodes>div,
+html.motion-paused .capability-item{transition:none!important}

@@ -16,6 +16,13 @@
     listen: [128,235,210], act: [246,210,113]
   };
   let state = frame.dataset.state || 'idle';
+  const renderColor = [...(palettes[state] || palettes.idle)];
+  const stateMix = {idle:0,think:0,listen:0,act:0};
+  stateMix[state] = 1;
+  const velocities = {idle:.17,think:.47,listen:.29,act:.58};
+  let spinSpeed = velocities[state] || velocities.idle;
+  const lowPower = (navigator.deviceMemory || 8) <= 4;
+  const frameInterval = () => width < 650 || lowPower ? 1000 / 40 : 1000 / 60;
   const rand = (seed) => {
     let n = seed >>> 0;
     return () => ((n = (Math.imul(n, 1664525) + 1013904223) >>> 0) / 4294967296);
@@ -50,20 +57,24 @@
         cy + p*size*.66 + Math.sin(spin)*size*.105
       ];
     };
-    // Layered translucent fibres make a single luminous ribbon with real depth.
-    for (const layer of [20,8,2.1]) {
-      ctx.beginPath();
-      for(let j=0;j<=64;j++) {
-        const p=-1+j/32;
-        const pt=wave(p);
-        if(j===0) ctx.moveTo(pt[0],pt[1]); else ctx.lineTo(pt[0],pt[1]);
-      }
-      ctx.lineCap='round';ctx.lineJoin='round';
-      ctx.lineWidth=layer*(size/270);
-      ctx.strokeStyle=rgba(c,layer===20?.026:layer===8?.14:.69);
-      ctx.shadowColor=rgba(c,layer===2.1?.7:.18);
-      ctx.shadowBlur=layer===20?22:layer===8?14:5;
-      ctx.stroke();
+    // Compute the ribbon curve once, then layer fine strokes over the same path.
+    // Avoid recalculating 65 trigonometric points for each bloom pass.
+    const path = new Path2D();
+    const segments = width < 650 || lowPower ? 40 : 60;
+    for(let j=0;j<=segments;j++) {
+      const p=-1+2*j/segments,pt=wave(p);
+      if(j===0) path.moveTo(pt[0],pt[1]); else path.lineTo(pt[0],pt[1]);
+    }
+    const layers = width < 650 || lowPower
+      ? [[13,.035,9],[2,.66,2]]
+      : [[19,.025,16],[7,.13,7],[1.9,.7,2]];
+    ctx.lineCap='round';ctx.lineJoin='round';
+    ctx.shadowColor=rgba(c,.28);
+    for(const [thickness,alpha,blur] of layers) {
+      ctx.lineWidth=thickness*(size/270);
+      ctx.strokeStyle=rgba(c,alpha);
+      ctx.shadowBlur=blur;
+      ctx.stroke(path);
     }
     ctx.shadowBlur=0;
   }
@@ -71,12 +82,12 @@
   function draw(time) {
     if(!width||!height)return;
     ctx.clearRect(0,0,width,height);
-    const c=palettes[state]||palettes.idle;
+    const c=renderColor;
     const size=Math.min(width*.49,height*.52,355);
     const onPhone=width<650;
     const cx=width*(onPhone?.66:.73)+pointer.x*size*.055;
     const cy=height*(onPhone?.68:.52)+pointer.y*size*.045;
-    const rate={idle:.17,think:.47,listen:.29,act:.58}[state]||.17;
+    const rate=spinSpeed;
     const t=time*.001;
 
     // Broad fog volumes and a suspended core. This is deliberately not a wireframe.
@@ -126,26 +137,34 @@
     ctx.fillStyle=focus;ctx.beginPath();ctx.arc(cx,cy,size*.24,0,Math.PI*2);ctx.fill();
 
     // State changes actually alter the entire scene, not merely its label.
-    if(state==='listen') {
+    if(stateMix.listen > .004) {
+      ctx.save();ctx.globalAlpha=stateMix.listen;
       for(let j=0;j<4;j++){
         const r=size*(.14+j*.15)+(Math.sin(t*1.7-j)*size*.02);
         ctx.beginPath();ctx.ellipse(cx,cy,r,r*.5,0,0,Math.PI*2);
         ctx.strokeStyle=rgba(c,.21-j*.038);ctx.lineWidth=2;ctx.stroke();
       }
-    } else if(state==='think') {
+      ctx.restore();
+    }
+    if(stateMix.think > .004) {
+      ctx.save();ctx.globalAlpha=stateMix.think;
       for(let j=0;j<4;j++){
         ctx.save();ctx.translate(cx,cy);ctx.rotate(t*.16+j*.75);
         ctx.beginPath();ctx.ellipse(0,0,size*(.45+j*.11),size*.18,0,-1.2,1.55);
         ctx.strokeStyle=rgba(c,.42-j*.06);ctx.lineWidth=1.6;ctx.shadowColor=rgba(c,.4);ctx.shadowBlur=12;ctx.stroke();ctx.restore();
       }
       ctx.shadowBlur=0;
-    } else if(state==='act') {
+      ctx.restore();
+    }
+    if(stateMix.act > .004) {
+      ctx.save();ctx.globalAlpha=stateMix.act;
       for(let i=0;i<12;i++){
         const a=t*.9+i*Math.PI/6;
         const x=cx+Math.cos(a)*size*.54,y=cy+Math.sin(a)*size*.32;
         ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+Math.cos(a)*size*.075,y+Math.sin(a)*size*.065);
         ctx.strokeStyle=rgba(c,.41);ctx.lineWidth=1.7;ctx.stroke();
       }
+      ctx.restore();
     }
 
     // Micro particles with orbit trails. Capped for mobile performance.
@@ -180,11 +199,22 @@
   function step(now){
     raf=0;
     if(document.hidden||!visible||pause())return;
-    if(now-last>32){
-      const delta=last?Math.min(now-last,80):0;
+    if(!last || now-last>=frameInterval()){
+      const delta=last ? Math.min(now-last,64) : 16;
       elapsed+=delta;
-      pointer.x+=(pointer.aimX-pointer.x)*.07;
-      pointer.y+=(pointer.aimY-pointer.y)*.07;
+      // Frame-rate independent smoothing avoids jerkiness on 60/120 Hz displays
+      // and keeps the palette/ribbon speed continuous when a mode changes.
+      const smooth=1-Math.exp(-delta/240);
+      const follow=1-Math.exp(-delta/180);
+      const target=palettes[state]||palettes.idle;
+      for(let i=0;i<3;i++)renderColor[i]+=(target[i]-renderColor[i])*smooth;
+      for(const name of Object.keys(stateMix)){
+        const to=name===state ? 1 : 0;
+        stateMix[name]+=(to-stateMix[name])*smooth;
+      }
+      spinSpeed+=((velocities[state]||velocities.idle)-spinSpeed)*smooth;
+      pointer.x+=(pointer.aimX-pointer.x)*follow;
+      pointer.y+=(pointer.aimY-pointer.y)*follow;
       draw(elapsed);last=now;
     }
     raf=requestAnimationFrame(step);
@@ -211,7 +241,16 @@
   }
   new MutationObserver(()=>{
     const next=frame.dataset.state||'idle';
-    if(next!==state){state=next;draw(elapsed);sync();}
+    if(next!==state){
+      state=next;
+      if(pause()){
+        const c=palettes[state]||palettes.idle;
+        renderColor.splice(0,3,...c);
+        for(const key of Object.keys(stateMix))stateMix[key]=key===state ? 1 : 0;
+        spinSpeed=velocities[state]||velocities.idle;
+      }
+      sync();
+    }
   }).observe(frame,{attributes:true,attributeFilter:['data-state']});
   if('ResizeObserver' in window)new ResizeObserver(resize).observe(frame);
   else window.addEventListener('resize',resize);

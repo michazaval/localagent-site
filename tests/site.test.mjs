@@ -127,3 +127,41 @@ test('new sculptural scene uses local Canvas 2D, respects performance and pause'
   assert.match(build, /assets\/atelier\.js/);
   assert.match(build, /assets\/atelier\.css/);
 });
+
+
+test('cinematic refinement is shipped locally with explicit build inclusion', () => {
+  const html=read('index.html');
+  const css=read('assets/finish.css');
+  const build=read('scripts/build.mjs');
+  assert.match(html, /assets\/finish\.css/);
+  assert.match(css, /\.architecture-nodes>div:hover/);
+  assert.match(css, /focus-visible/);
+  assert.match(css, /prefers-reduced-motion:reduce/);
+  assert.match(build, /assets\/finish\.css/);
+  assert.doesNotMatch(css, /@import|https?:\/\//i);
+});
+
+test('sculpture updates smoothly on frame-clock, not a hard 30fps snap', () => {
+  const js=read('assets/atelier.js');
+  assert.match(js, /new Path2D\(\)/);
+  assert.match(js, /const frameInterval =/);
+  assert.match(js, /1000 \/ 60/);
+  assert.match(js, /const smooth=1-Math\.exp\(-delta\/240\)/);
+  assert.match(js, /stateMix\[name\]\+=/);
+  assert.match(js, /renderColor\[i\]\+=/);
+  assert.match(js, /ctx\.globalAlpha=stateMix\.listen/);
+  assert.match(js, /ctx\.globalAlpha=stateMix\.think/);
+  assert.match(js, /ctx\.globalAlpha=stateMix\.act/);
+  assert.match(js, /document\.hidden/);
+  assert.match(js, /cancelAnimationFrame/);
+});
+
+test('performance keeps bounded canvas dimensions and reduced mobile complexity', () => {
+  const js=read('assets/atelier.js');
+  assert.match(js, /1600\/Math\.max\(width,height\)/);
+  assert.match(js, /width < 650 \|\| lowPower/);
+  assert.match(js, /const segments =/);
+  assert.match(js, /const max=onPhone\?46:dust\.length/);
+  assert.match(js, /ResizeObserver/);
+  assert.doesNotMatch(js, /\bfetch\s*\(|\bWebSocket\b|XMLHttpRequest|localStorage/);
+});

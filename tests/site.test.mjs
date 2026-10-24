@@ -63,3 +63,24 @@ test('cinematic assets are explicitly built and do not depend on remote media', 
   assert.match(build, /assets\/cinematic\.css/);
   assert.doesNotMatch(css, /https?:\/\//);
 });
+
+test('manual motion control and live concept-state explanations are accessible and offline', () => {
+  const html=read('index.html');
+  const js=read('assets/polish.js');
+  const css=read('assets/polish.css');
+  const app=read('assets/main.js');
+  assert.match(html, /id="motionToggle"[^>]+aria-pressed/);
+  assert.match(html, /id="signalInsight"[^>]+aria-live="polite"/);
+  assert.match(js, /localagent:motion-change/);
+  assert.match(js, /No model is running/);
+  assert.match(js, /Микрофон выключен/);
+  assert.match(css, /motion-paused/);
+  assert.match(app, /motionPaused\(\)/);
+  assert.doesNotMatch(js, /\bfetch\s*\(|XMLHttpRequest|WebSocket|localStorage/);
+});
+
+test('GitHub Pages 404 returns visitors to project root from nested routes', () => {
+  const html=read('404.html');
+  assert.match(html, /href="\/localagent-site\/"/);
+  assert.doesNotMatch(html, /href="\.\/"/);
+});

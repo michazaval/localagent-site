@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="has-polish">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -12,8 +12,10 @@
   <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="./assets/styles.css" />
   <link rel="stylesheet" href="./assets/cinematic.css" />
+  <link rel="stylesheet" href="./assets/polish.css" />
   <title>LocalAgent — Intelligence on your terms</title>
   <script src="./assets/main.js" defer></script>
+  <script src="./assets/polish.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -35,6 +37,7 @@
       <a href="#availability" data-i18n="navRelease">RELEASE</a>
     </nav>
     <div class="header-actions">
+      <button class="motion-toggle" type="button" id="motionToggle" aria-pressed="false" aria-label="Pause decorative animation" title="Pause decorative animation"><span class="motion-icon" aria-hidden="true">Ⅱ</span><span id="motionLabel">PAUSE FX</span></button>
       <button class="language-switch" type="button" id="langToggle" aria-label="Switch language to Russian">RU <span aria-hidden="true">↗</span></button>
       <a class="header-cta" href="#experience"><span data-i18n="navExplore">EXPLORE</span><span aria-hidden="true">↗</span></a>
       <button class="menu-toggle" type="button" id="menuToggle" aria-label="Open navigation" aria-expanded="false" aria-controls="navigation"><span></span><span></span></button>
@@ -66,6 +69,7 @@
             <div class="field-center-type" aria-hidden="true"><span>HUMAN</span><span class="field-center-symbol">↔</span><span>MACHINE</span></div>
             <div class="field-bottom-data"><span class="field-breath" id="stateText">SIGNAL: IDLE</span><span id="fieldCounter">PARTICLES / 064</span></div>
           </div>
+          <p class="signal-insight" id="signalInsight" role="status" aria-live="polite">SIGNAL / IDLE — Waiting for an instruction. Visual simulation.</p>
           <div class="field-controls" aria-label="Interactive visual states">
             <span class="controls-caption" data-i18n="controlsCaption">TRY A STATE</span>
             <div class="control-buttons" role="group" aria-label="Signal states">

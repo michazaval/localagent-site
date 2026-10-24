@@ -15,9 +15,9 @@ The explicit `dist/` allow-list includes `index.html`, `404.html`, `robots.txt` 
 
 ## GitHub Pages
 
-The repository was renamed to `michazaval/localagent-site` and the previous UniTeam version is preserved at `archive/uniteam-site-before-localagent`. GitHub Pages is configured to build using GitHub Actions. A push to the site's `main` after a reviewed PR builds and deploys only `dist/` to `https://michazaval.github.io/localagent-site/`.
+The repository was renamed to `michazaval/localagent-site` and the previous UniTeam version is preserved at `archive/uniteam-site-before-localagent`. GitHub Pages is configured to build using GitHub Actions. Development process: `feature/* → develop → main`. The site implementer merges verified feature PRs into `develop` without a mandatory separate review. The owner checks the update from `develop` (for example by running the site locally or viewing a PR preview artifact); **only after explicit owner approval** is `develop` merged into `main`. Pushes and pull requests targeting `develop` run CI but do **not** deploy. A push to `main` builds and publishes only `dist/` to `https://michazaval.github.io/localagent-site/`. GitHub Pages shows **`main` only**, not `develop`.
 
-On pull requests, only validation runs. For deployment, the workflow grants `pages: write` and `id-token: write` in the deployment job, not the PR build. Keep the `github-pages` environment restricted to `main`.
+On pull requests and pushes to `develop`, only validation runs. For deployment, the workflow grants `pages: write` and `id-token: write` in the deployment job, not the PR build. Keep the `github-pages` environment restricted to `main`.
 
 ## Product and security boundaries
 

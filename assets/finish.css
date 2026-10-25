@@ -130,3 +130,12 @@ body{font-feature-settings:"kern" 1,"liga" 1;text-rendering:optimizeLegibility}
 html.motion-paused .brand-icon,
 html.motion-paused .architecture-nodes>div,
 html.motion-paused .capability-item{transition:none!important}
+
+/* Static fallback is for no-JavaScript/no-Canvas only.
+   Previously its 2px laser ::before stayed visible over the live Canvas sculpture,
+   producing the two straight stripes reported on the screenshot. */
+html.has-energy-scene .field-frame .scene-fallback::before,
+html.has-energy-scene .field-frame .scene-fallback::after{
+  content:none!important;
+  display:none!important;
+}

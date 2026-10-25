@@ -6,7 +6,6 @@
   if (!canvas || !frame) return;
   const ctx = canvas.getContext('2d', {alpha:true, desynchronized:true});
   if (!ctx) return;
-  document.documentElement.classList.add('has-energy-scene');
 
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   let width = 1, height = 1, raf = 0, visible = true, last = 0, elapsed = 0;
@@ -114,19 +113,19 @@
     for(let band=0;band<6;band++)
       strand(cx,cy,size,t,band,c,rate*(band%2?1:-1));
 
-    // The central light column has a soft sculpted shape and tapered edges.
-    const shaft=ctx.createLinearGradient(cx-size*.18,0,cx+size*.18,0);
-    shaft.addColorStop(0,rgba(c,0));
-    shaft.addColorStop(.38,rgba(c,.012));
-    shaft.addColorStop(.5,rgba(c,.115));
-    shaft.addColorStop(.62,rgba(c,.012));
-    shaft.addColorStop(1,rgba(c,0));
-    ctx.fillStyle=shaft;
-    ctx.beginPath();
-    ctx.moveTo(cx-size*.025,cy-size*.7);
-    ctx.bezierCurveTo(cx-size*.22,cy-size*.14,cx-size*.16,cy+size*.45,cx,cy+size*.8);
-    ctx.bezierCurveTo(cx+size*.16,cy+size*.45,cx+size*.22,cy-size*.14,cx+size*.025,cy-size*.7);
-    ctx.fill();
+    // Diffuse atmospheric light: no straight-edged central shaft.
+    // An elliptical radial field retains volume without looking like a duplicate beam.
+    ctx.save();
+    ctx.translate(cx,cy);
+    ctx.scale(.58,1.36);
+    const volume=ctx.createRadialGradient(0,0,size*.04,0,0,size*.70);
+    volume.addColorStop(0,rgba(c,.13));
+    volume.addColorStop(.42,rgba(c,.055));
+    volume.addColorStop(.77,rgba(c,.012));
+    volume.addColorStop(1,rgba(c,0));
+    ctx.fillStyle=volume;
+    ctx.beginPath();ctx.arc(0,0,size*.70,0,Math.PI*2);ctx.fill();
+    ctx.restore();
 
     // A luminous focal lens with differentiated behaviour for each state.
     const focus=ctx.createRadialGradient(cx,cy,1,cx,cy,size*.24);
@@ -254,5 +253,8 @@
   }).observe(frame,{attributes:true,attributeFilter:['data-state']});
   if('ResizeObserver' in window)new ResizeObserver(resize).observe(frame);
   else window.addEventListener('resize',resize);
-  resize();sync();
+  resize();
+  // Only hide the static fallback after the first Canvas frame was painted.
+  document.documentElement.classList.add('has-energy-scene');
+  sync();
 })();

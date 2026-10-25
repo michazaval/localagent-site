@@ -165,3 +165,21 @@ test('performance keeps bounded canvas dimensions and reduced mobile complexity'
   assert.match(js, /ResizeObserver/);
   assert.doesNotMatch(js, /\bfetch\s*\(|\bWebSocket\b|XMLHttpRequest|localStorage/);
 });
+
+
+test('active Canvas suppresses duplicate straight fallback stripes', () => {
+  const scene=read('assets/atelier.js');
+  const css=read('assets/finish.css');
+  const fallback=read('assets/cinematic.css');
+  assert.match(fallback, /\.scene-fallback::before/);
+  assert.match(css, /html\.has-energy-scene \.field-frame \.scene-fallback::before/);
+  assert.match(css, /html\.has-energy-scene \.field-frame \.scene-fallback::after/);
+  assert.match(css, /content:none!important/);
+  assert.match(css, /display:none!important/);
+  assert.match(scene, /Diffus(e|ed) atmospheric light/);
+  assert.match(scene, /ctx\.createRadialGradient\(0,0,size\*\.04,0,0,size\*\.70\)/);
+  assert.doesNotMatch(scene, /const shaft=ctx\.createLinearGradient/);
+  const painted = scene.indexOf('  resize();');
+  const activated = scene.lastIndexOf("document.documentElement.classList.add('has-energy-scene')");
+  assert.ok(painted >= 0 && activated > painted, 'fallback hides only after first Canvas paint');
+});

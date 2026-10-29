@@ -9,10 +9,16 @@ try{
  for(let i=0;i<40;i++){try{if((await fetch('http://127.0.0.1:8783/')).ok)break;}catch{}await new Promise(r=>setTimeout(r,100));}
  browser=await chromium.launch({headless:true,channel:process.env.V3_CHANNEL||undefined,args:['--enable-webgl','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
  const page=await browser.newPage();page.setDefaultTimeout(15000);
+ // Deliberately exercise the runner's constrained-device policy on every platform.
+ await page.addInitScript(()=>Object.defineProperty(navigator,'hardwareConcurrency',{value:2}));
  const errors=[];page.on('pageerror',e=>errors.push(e.message));
  for(const path of ['concept-a','concept-c','concept-bplus']){
   await page.goto(`http://127.0.0.1:8783/experiments/site-v3/${path}/`);
-  await page.waitForFunction(()=>document.querySelector('canvas').dataset.renderer==='webgl');
+  await page.waitForFunction(()=>document.title.includes(' — '));
+  if(path==='concept-bplus')await page.selectOption('#quality','high');
+  else await page.click('#lite');
+  try{await page.waitForFunction(()=>document.querySelector('canvas').dataset.renderer==='webgl');}
+  catch(error){throw new Error(`${path}: ${JSON.stringify(await page.locator('canvas').evaluate(e=>({...e.dataset})))}`,{cause:error});}
   if(path==='concept-bplus'){
    for(const quality of ['high','balanced','lite','high']){await page.selectOption('#quality',quality);assert.equal(await page.locator('canvas').getAttribute('data-quality'),quality);}
    for(const state of [0,1,2,3]){await page.click(`button[data-state="${state}"]`);assert.equal(await page.locator(`button[data-state="${state}"]`).getAttribute('aria-pressed'),'true');}

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="has-polish">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -12,8 +12,13 @@
   <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="./assets/styles.css" />
   <link rel="stylesheet" href="./assets/cinematic.css" />
+  <link rel="stylesheet" href="./assets/polish.css" />
+  <link rel="stylesheet" href="./assets/atelier.css" />
+  <link rel="stylesheet" href="./assets/finish.css" />
   <title>LocalAgent — Intelligence on your terms</title>
   <script src="./assets/main.js" defer></script>
+  <script src="./assets/polish.js" defer></script>
+  <script src="./assets/atelier.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -35,6 +40,7 @@
       <a href="#availability" data-i18n="navRelease">RELEASE</a>
     </nav>
     <div class="header-actions">
+      <button class="motion-toggle" type="button" id="motionToggle" aria-pressed="false" aria-label="Pause decorative animation" title="Pause decorative animation"><span class="motion-icon" aria-hidden="true">Ⅱ</span><span id="motionLabel">PAUSE FX</span></button>
       <button class="language-switch" type="button" id="langToggle" aria-label="Switch language to Russian">RU <span aria-hidden="true">↗</span></button>
       <a class="header-cta" href="#experience"><span data-i18n="navExplore">EXPLORE</span><span aria-hidden="true">↗</span></a>
       <button class="menu-toggle" type="button" id="menuToggle" aria-label="Open navigation" aria-expanded="false" aria-controls="navigation"><span></span><span></span></button>
@@ -49,24 +55,25 @@
       </div>
       <div class="hero-layout section-container">
         <div class="hero-copy">
-          <div class="hero-ruler"><span>LOCAL INTELLIGENCE</span><span>↘ 01</span></div>
+          <p class="hero-ruler" data-i18n="heroRuler">Local intelligence. Human control.</p>
           <h1 id="hero-heading" class="hero-title"><span data-i18n="heroLine1">YOUR</span><span class="outlined" data-i18n="heroLine2">SPACE.</span><span><span data-i18n="heroLine3">YOUR AI</span><span class="lime-period">.</span></span></h1>
           <div class="hero-bottom">
             <p class="hero-description" data-i18n="heroDesc">We're building a Windows assistant that can think, remember and act on your machine — with local models at its core.</p>
-            <a href="#approach" class="round-arrow" aria-label="Discover LocalAgent"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6"/></svg></a>
+            <div class="hero-actions"><a href="#experience" class="hero-primary" data-i18n="heroExplore">Explore the concept</a><a href="#approach" class="hero-secondary" data-i18n="heroIdea">The idea behind it</a></div>
           </div>
           <p class="hero-footnote"><span class="mini-line"></span><span data-i18n="heroFootnote">NOT A CLOUD CHATBOT. NOT A WEB APP.</span></p>
         </div>
         <div class="hero-visual" id="fieldContainer">
           <div class="field-frame" id="fieldFrame">
             <div class="scene-fallback" aria-hidden="true"></div>
-            <canvas id="signalCanvas" role="img" aria-label="Decorative animated signal beam, ground halo and floating particles. Appearance changes with the selected state"></canvas>
+            <canvas id="signalCanvas" role="img" aria-label="Decorative kinetic light sculpture with floating luminous ribbons and particles. The appearance changes with the selected visual simulation state"></canvas>
             <span class="field-corner corner-tl" aria-hidden="true">+</span><span class="field-corner corner-tr" aria-hidden="true">+</span><span class="field-corner corner-bl" aria-hidden="true">+</span><span class="field-corner corner-br" aria-hidden="true">+</span>
             <div class="field-coordinates"><span>LA / SIGNAL CHAMBER</span><span class="field-coord-value">NODE / 001</span></div>
             <div class="field-center-type" aria-hidden="true"><span>HUMAN</span><span class="field-center-symbol">↔</span><span>MACHINE</span></div>
             <div class="field-bottom-data"><span class="field-breath" id="stateText">SIGNAL: IDLE</span><span id="fieldCounter">PARTICLES / 064</span></div>
           </div>
-          <div class="field-controls" aria-label="Interactive visual states">
+          <p class="signal-insight" id="signalInsight" role="status" aria-live="polite">SIGNAL / IDLE — Waiting for an instruction. Visual simulation.</p>
+          <div class="field-controls" aria-label="Interactive visual states" aria-describedby="signalInsight">
             <span class="controls-caption" data-i18n="controlsCaption">TRY A STATE</span>
             <div class="control-buttons" role="group" aria-label="Signal states">
               <button class="state-btn is-active" type="button" data-state="idle" aria-pressed="true" data-i18n="stateIdle">IDLE</button>
@@ -118,7 +125,7 @@
     </section>
 
     <section class="architecture section-light" id="architecture" aria-labelledby="architecture-heading">
-      <div class="section-container"><div class="section-heading"><span class="section-index">[ 05 / PRINCIPLE ]</span><span class="section-side-note" data-i18n="archSide">LOCAL BY DESIGN</span></div><div class="architecture-grid"><div class="architecture-copy reveal"><h2 id="architecture-heading" data-i18n="archTitle">THE CENTER<br>IS <em>YOU.</em></h2><p data-i18n="archText">The goal is simple: keep core intelligence and remembered context on your machine. Online access can still be used when you ask the assistant to work with the web.</p><p class="arch-disclaimer" data-i18n="archDisclaimer">Architecture illustration; component availability depends on development, hardware and user permissions.</p></div><div class="architecture-map reveal" role="img" aria-label="Conceptual architecture: user controls a Windows app connecting to local model, local memory, and permission-based tools"><div class="architecture-top"><span>DEVICE / WINDOWS</span><span>BOUNDARY_01</span></div><div class="architecture-central"><span class="architecture-cross" aria-hidden="true">✳</span><strong>LOCALAGENT</strong><small data-i18n="archCore">USER CONTROL LAYER</small></div><div class="architecture-lines" aria-hidden="true"><span></span><span></span><span></span></div><div class="architecture-nodes"><div><span>01</span><strong data-i18n="archNode1">LOCAL MODEL</strong><small>INFERENCE</small></div><div><span>02</span><strong data-i18n="archNode2">MEMORY</strong><small>ON DEVICE</small></div><div><span>03</span><strong data-i18n="archNode3">TOOLS</strong><small>PERMISSIONS</small></div></div><p class="architecture-caption">CLOUD AI REQUIRED <strong>NO*</strong><span>* <span data-i18n="archCaveat">for core inference as designed</span></span></p></div></div></div>
+      <div class="section-container"><div class="section-heading"><span class="section-index">[ 05 / PRINCIPLE ]</span><span class="section-side-note" data-i18n="archSide">LOCAL BY DESIGN</span></div><div class="architecture-grid"><div class="architecture-copy reveal"><h2 id="architecture-heading" data-i18n="archTitle">THE CENTER<br>IS <em>YOU.</em></h2><p data-i18n="archText">The goal is simple: keep core intelligence and remembered context on your machine. Online access can still be used when you ask the assistant to work with the web.</p><p class="arch-disclaimer" data-i18n="archDisclaimer">Architecture illustration; component availability depends on development, hardware and user permissions.</p></div><div class="architecture-map reveal" role="img" aria-label="Conceptual architecture: user controls a Windows app connecting to local model, local memory, and permission-based tools"><div class="architecture-top"><span>DEVICE / WINDOWS</span><span>BOUNDARY_01</span></div><div class="architecture-central"><span class="architecture-cross" aria-hidden="true">✳</span><strong>LOCALAGENT</strong><small data-i18n="archCore">USER CONTROL LAYER</small></div><div class="architecture-bus" aria-hidden="true"><span></span><span></span><span></span></div><div class="architecture-nodes"><div><span>01</span><strong data-i18n="archNode1">LOCAL MODEL</strong><small>INFERENCE</small></div><div><span>02</span><strong data-i18n="archNode2">MEMORY</strong><small>ON DEVICE</small></div><div><span>03</span><strong data-i18n="archNode3">TOOLS</strong><small>PERMISSIONS</small></div></div><p class="architecture-caption">CLOUD AI REQUIRED <strong>NO*</strong><span>* <span data-i18n="archCaveat">for core inference as designed</span></span></p></div></div></div>
     </section>
 
     <section class="roadmap section-light" id="roadmap" aria-labelledby="roadmap-heading"><div class="section-container"><div class="section-heading"><span class="section-index">[ 06 / THE JOURNEY ]</span><span class="section-side-note" data-i18n="roadmapSide">BUILDING TOWARDS A REAL RELEASE</span></div><div class="roadmap-header reveal"><h2 id="roadmap-heading" data-i18n="roadmapTitle">WORK IN<br>PROGRESS<span class="period-dark">.</span></h2><p data-i18n="roadmapIntro">A public-facing overview, not a live sync of private engineering work. No release date is promised until the Windows build passes acceptance.</p></div><ol class="roadmap-timeline"><li class="roadmap-row reveal"><span class="roadmap-index">01 /</span><span class="roadmap-marker"><span></span></span><div><h3 data-i18n="roadmap1">FOUNDATION</h3><p data-i18n="roadmap1Desc">Architecture, local model runtime and the desktop shell.</p></div><span class="roadmap-state" data-i18n="roadmapStatus1">DEVELOPING</span></li><li class="roadmap-row reveal"><span class="roadmap-index">02 /</span><span class="roadmap-marker"><span></span></span><div><h3 data-i18n="roadmap2">USEFUL WINDOWS MVP</h3><p data-i18n="roadmap2Desc">Repeatable startup, one end-to-end scenario, safe cancel and clear errors.</p></div><span class="roadmap-state" data-i18n="roadmapStatus2">VALIDATION</span></li><li class="roadmap-row reveal"><span class="roadmap-index">03 /</span><span class="roadmap-marker"><span></span></span><div><h3 data-i18n="roadmap3">DEEPER CAPABILITIES</h3><p data-i18n="roadmap3Desc">Memory, skills, voice and Windows automation as their acceptance gates pass.</p></div><span class="roadmap-state is-muted" data-i18n="roadmapStatus3">IN DEVELOPMENT</span></li><li class="roadmap-row reveal"><span class="roadmap-index">04 /</span><span class="roadmap-marker"><span></span></span><div><h3 data-i18n="roadmap4">LOCALAGENT 1.0</h3><p data-i18n="roadmap4Desc">Verified release candidate, real-device testing and owner approval.</p></div><span class="roadmap-state is-muted" data-i18n="roadmapStatus4">NOT RELEASED</span></li></ol><p class="roadmap-footnote" data-i18n="roadmapFootnote">The roadmap is intentionally conservative: planned features are not advertised as shipping features.</p></div></section>

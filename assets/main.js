@@ -4,6 +4,7 @@ const translations = {
     navApproach: 'THE IDEA', navDemo: 'EXPERIENCE', navRoadmap: 'ROADMAP', navRelease: 'RELEASE', navExplore: 'EXPLORE',
     heroEyebrow: 'INDEPENDENT WINDOWS AI · IN DEVELOPMENT', heroLine1: 'YOUR', heroLine2: 'SPACE.', heroLine3: 'YOUR AI',
     heroDesc: "We're building a Windows assistant that can think, remember and act on your machine — with local models at its core.",
+    heroRuler: 'Local intelligence. Human control.', heroExplore: 'Explore the concept', heroIdea: 'The idea behind it',
     heroFootnote: 'NOT A CLOUD CHATBOT. NOT A WEB APP.', controlsCaption: 'TRY A STATE',
     stateIdle: 'IDLE', stateThink: 'THINK', stateListen: 'LISTEN', stateAct: 'ACT',
     heroVizNote: 'AN INTERACTIVE VISUAL CONCEPT — NOT A LIVE AGENT SESSION.',
@@ -46,6 +47,7 @@ const translations = {
     navApproach: 'ИДЕЯ', navDemo: 'ДЕМОНСТРАЦИЯ', navRoadmap: 'ДОРОЖНАЯ КАРТА', navRelease: 'РЕЛИЗ', navExplore: 'СМОТРЕТЬ',
     heroEyebrow: 'НЕЗАВИСИМЫЙ ИИ ДЛЯ WINDOWS · В РАЗРАБОТКЕ', heroLine1: 'ТВОЁ', heroLine2: 'МЕСТО.', heroLine3: 'ТВОЙ ИИ',
     heroDesc: 'Мы создаём Windows-ассистента, который сможет думать, помнить и действовать на твоём компьютере. В основе — локальные модели.',
+    heroRuler: 'Локальный интеллект. Твой контроль.', heroExplore: 'Посмотреть концепцию', heroIdea: 'Идея проекта',
     heroFootnote: 'НЕ ОБЛАЧНЫЙ ЧАТБОТ. НЕ ВЕБ-ПРИЛОЖЕНИЕ.', controlsCaption: 'ВЫБЕРИ РЕЖИМ',
     stateIdle: 'ПОКОЙ', stateThink: 'ДУМАЕТ', stateListen: 'СЛУШАЕТ', stateAct: 'ДЕЙСТВУЕТ',
     heroVizNote: 'ИНТЕРАКТИВНАЯ КОНЦЕПЦИЯ — НЕ НАСТОЯЩИЙ СЕАНС С АГЕНТОМ.',
@@ -188,8 +190,9 @@ window.addEventListener('resize', () => { if (window.innerWidth > 900) closeMenu
 document.querySelector('#year').textContent = String(new Date().getFullYear());
 
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+const motionPaused = () => reducedMotion.matches || document.documentElement.classList.contains('motion-paused');
 const revealElements = document.querySelectorAll('.reveal');
-if ('IntersectionObserver' in window && !reducedMotion.matches) {
+if ('IntersectionObserver' in window && !motionPaused()) {
   const revealObserver = new IntersectionObserver((entries, observer) => {
     for (const entry of entries) if (entry.isIntersecting) {
       entry.target.classList.add('is-visible');
@@ -202,183 +205,7 @@ reducedMotion.addEventListener('change', event => {
   if (event.matches) revealElements.forEach(element => element.classList.add('is-visible'));
 });
 
-// Small hand-built signal visualization. Canvas is always decorative; all meaningful
-// information is in adjacent, accessible DOM. Rendering pauses outside the viewport.
-const canvas = document.querySelector('#signalCanvas');
-const context = canvas.getContext('2d', { alpha: true });
-const fieldFrame = document.querySelector('#fieldFrame');
-if (context) {
-  let width = 1, height = 1, animationId = 0, lastPaint = 0, visible = true;
-  let nodes = [], pointer = { x: .55, y: .5, active: false };
-  let seed = 14892;
-  const random = () => { seed = (seed * 1664525 + 1013904223) >>> 0; return seed / 4294967296; };
-  function makeNodes() {
-    seed = 14892;
-    const count = width < 480 ? 39 : 64;
-    nodes = Array.from({ length: count }, (_, i) => ({ x: .08 + random() * .84, y: .09 + random() * .82, size: 1 + random() * 1.7, phase: random() * Math.PI * 2, speed: .65 + random() * 1.3, id: i }));
-    document.querySelector('#fieldCounter').textContent = `PARTICLES / ${String(count).padStart(3, '0')}`;
-  }
-  function resizeCanvas() {
-    const rect = fieldFrame.getBoundingClientRect();
-    width = Math.max(1, rect.width); height = Math.max(1, rect.height);
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    canvas.width = Math.floor(width * dpr); canvas.height = Math.floor(height * dpr);
-    context.setTransform(dpr, 0, 0, dpr, 0, 0);
-    makeNodes();
-    if (reducedMotion.matches) draw(0);
-  }
-  function draw(time) {
-    context.clearRect(0, 0, width, height);
-    const t = time * .001;
-
-    // Cinematic light well, composed entirely of original canvas primitives.
-    // A static CSS fallback remains visible without JS and when motion is reduced.
-    const colors = {
-      idle: [163, 255, 64], think: [255, 138, 65],
-      listen: [73, 245, 180], act: [224, 255, 105]
-    };
-    const [r, g, b] = colors[currentState];
-    const cx = width * (width < 580 ? .63 : .73) + (pointer.active ? (pointer.x - .5) * 13 : 0);
-    const horizon = height * (width < 580 ? .85 : .76);
-    const pulse = 1 + Math.sin(t * (currentState === 'think' ? 1.8 : .72)) * .08;
-    const rgba = a => `rgba(${r},${g},${b},${a})`;
-    context.save();
-    context.globalCompositeOperation = 'screen';
-    const groundGlow = context.createRadialGradient(cx, horizon, 1, cx, horizon, width * .36);
-    groundGlow.addColorStop(0, rgba(.32));
-    groundGlow.addColorStop(.23, rgba(.13));
-    groundGlow.addColorStop(.68, rgba(.016));
-    groundGlow.addColorStop(1, rgba(0));
-    context.save(); context.translate(cx, horizon); context.scale(1, .30);
-    context.fillStyle = groundGlow;
-    context.beginPath(); context.arc(0, 0, width * .36, 0, Math.PI * 2); context.fill();
-    context.restore();
-    const vertical = context.createLinearGradient(cx, height * .13, cx, horizon);
-    vertical.addColorStop(0, rgba(0));
-    vertical.addColorStop(.16, rgba(.05));
-    vertical.addColorStop(.52, rgba(.21));
-    vertical.addColorStop(.85, rgba(.35));
-    vertical.addColorStop(1, rgba(.72));
-    for (let layer = 0; layer < 3; layer++) {
-      const halfWidth = [78, 39, 10][layer] * (width / 900) * pulse;
-      const beam = context.createLinearGradient(cx - halfWidth, 0, cx + halfWidth, 0);
-      beam.addColorStop(0, rgba(0));
-      beam.addColorStop(.35, rgba([.008,.024,.07][layer]));
-      beam.addColorStop(.5, rgba([.035,.09,.33][layer]));
-      beam.addColorStop(.65, rgba([.008,.024,.07][layer]));
-      beam.addColorStop(1, rgba(0));
-      context.globalAlpha = [0.75, .92, 1][layer];
-      context.fillStyle = beam;
-      context.beginPath();
-      context.moveTo(cx - halfWidth * .12, height * .18);
-      context.bezierCurveTo(cx - halfWidth * .9, height * .52, cx - halfWidth * .35, height * .69, cx - halfWidth, horizon);
-      context.lineTo(cx + halfWidth, horizon);
-      context.bezierCurveTo(cx + halfWidth * .35, height * .69, cx + halfWidth * .9, height * .52, cx + halfWidth * .12, height * .18);
-      context.closePath(); context.fill();
-    }
-    context.globalAlpha = 1;
-    context.fillStyle = vertical;
-    context.fillRect(cx - 1.1, height * .22, 2.2, horizon - height * .22);
-    // Elliptical energy horizon and perspective rings.
-    for (let ring = 0; ring < 8; ring++) {
-      context.beginPath();
-      context.ellipse(cx, horizon + ring * 4, width * (.043 + ring * .033), height * (.008 + ring * .008), 0, 0, Math.PI * 2);
-      context.strokeStyle = rgba((.28 - ring * .031) * pulse);
-      context.lineWidth = ring < 2 ? 1.3 : .8;
-      context.stroke();
-    }
-    for (let ray = 0; ray < 20; ray++) {
-      const angle = -Math.PI / 2 + (ray / 19) * Math.PI;
-      const spread = width * .34;
-      context.beginPath();
-      context.moveTo(cx, horizon);
-      context.lineTo(cx + Math.cos(angle) * spread, horizon + Math.sin(angle) * height * .105);
-      context.strokeStyle = rgba(ray % 4 === 0 ? .09 : .025);
-      context.lineWidth = .6;
-      context.stroke();
-    }
-    const source = context.createRadialGradient(cx, horizon, 0, cx, horizon, Math.max(width * .077, 35));
-    source.addColorStop(0, 'rgba(251,255,220,.72)');
-    source.addColorStop(.09, rgba(.53));
-    source.addColorStop(.31, rgba(.16));
-    source.addColorStop(1, rgba(0));
-    context.fillStyle = source;
-    context.beginPath(); context.arc(cx, horizon, Math.max(width * .077, 35), 0, Math.PI * 2); context.fill();
-    context.restore();
-
-    const speed = { idle: .2, think: .9, listen: .48, act: 1.2 }[currentState];
-    const influence = pointer.active ? 1 : 0;
-    const points = nodes.map(p => {
-      const wave = Math.sin(t * speed * p.speed + p.phase);
-      const xNorm = p.x + Math.sin(t * .22 * p.speed + p.phase) * .021 + (currentState === 'listen' ? Math.sin(t * 1.2 + p.y * 18) * .025 : 0);
-      const yNorm = p.y + Math.cos(t * .23 * p.speed + p.phase) * .021 + (currentState === 'think' ? wave * .018 : 0);
-      const cursorDx = pointer.x - xNorm, cursorDy = pointer.y - yNorm;
-      const cursorDistance = Math.hypot(cursorDx, cursorDy);
-      const cursorPull = influence * Math.max(0, 1 - cursorDistance / .28) * .08;
-      return { x: (xNorm + cursorDx * cursorPull) * width, y: (yNorm + cursorDy * cursorPull) * height, r: p.size * (1 + (currentState === 'act' ? Math.max(0, wave) * .4 : 0)) };
-    });
-    const lineLimit = Math.min(width, height) * (width < 500 ? .24 : .22);
-    context.lineWidth = .75;
-    for (let i = 0; i < points.length; i++) {
-      for (let j = i + 1; j < points.length; j++) {
-        const a = points[i], b = points[j];
-        const distance = Math.hypot(a.x - b.x, a.y - b.y);
-        if (distance > lineLimit) continue;
-        const alpha = (1 - distance / lineLimit) * (currentState === 'think' ? .29 : .22);
-        context.strokeStyle = `rgba(${r},${g},${b},${(alpha * .48).toFixed(3)})`;
-        context.beginPath(); context.moveTo(a.x, a.y); context.lineTo(b.x, b.y); context.stroke();
-      }
-    }
-    points.forEach((p, i) => {
-      const highlight = i % 11 === 0;
-      const radius = p.r + (highlight ? .6 : 0);
-      context.fillStyle = highlight ? '#efffd7' : rgba(.8);
-      context.globalAlpha = highlight ? .92 : .36;
-      context.beginPath(); context.arc(p.x, p.y, radius, 0, Math.PI * 2); context.fill();
-      if (highlight) {
-        context.strokeStyle = rgba(.16); context.lineWidth = 1;
-        context.beginPath(); context.arc(p.x, p.y, radius + 10, 0, Math.PI * 2); context.stroke();
-      }
-    });
-    context.globalAlpha = 1;
-    if (pointer.active) {
-      const x = pointer.x * width, y = pointer.y * height;
-      context.strokeStyle = rgba(.5);
-      context.lineWidth = 1;
-      context.beginPath(); context.arc(x, y, 32 + (currentState === 'think' ? Math.sin(t * 2) * 6 : 0), 0, Math.PI * 2); context.stroke();
-      context.beginPath(); context.moveTo(x - 8, y); context.lineTo(x + 8, y); context.moveTo(x, y - 8); context.lineTo(x, y + 8); context.stroke();
-    }
-  }
-  function tick(now) {
-    animationId = 0;
-    if (!visible || document.hidden || reducedMotion.matches) return;
-    if (now - lastPaint >= 32) { draw(now); lastPaint = now; }
-    animationId = requestAnimationFrame(tick);
-  }
-  function start() {
-    if (!animationId && visible && !document.hidden && !reducedMotion.matches) animationId = requestAnimationFrame(tick);
-    else if (reducedMotion.matches) draw(0);
-  }
-  function stop() { if (animationId) cancelAnimationFrame(animationId); animationId = 0; }
-  fieldFrame.addEventListener('pointermove', event => {
-    if (event.pointerType === 'touch') return;
-    const rect = fieldFrame.getBoundingClientRect();
-    pointer = { x: Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width)), y: Math.max(0, Math.min(1, (event.clientY - rect.top) / rect.height)), active: true };
-  }, { passive: true });
-  fieldFrame.addEventListener('pointerleave', () => { pointer.active = false; });
-  document.addEventListener('visibilitychange', () => { if (document.hidden) stop(); else start(); });
-  if ('IntersectionObserver' in window) {
-    const fieldObserver = new IntersectionObserver(entries => {
-      visible = entries[0]?.isIntersecting ?? true;
-      if (visible) start(); else stop();
-    }, { threshold: 0 });
-    fieldObserver.observe(fieldFrame);
-  }
-  reducedMotion.addEventListener('change', event => { if (event.matches) { stop(); draw(0); } else start(); });
-  if ('ResizeObserver' in window) new ResizeObserver(resizeCanvas).observe(fieldFrame);
-  else window.addEventListener('resize', resizeCanvas);
-  resizeCanvas(); start();
-}
+// The Canvas scene lives in atelier.js; interface state/locale remain here.
 setLanguage('en');
 
 // Thin scroll indicator makes long-form interaction discoverable without

@@ -1,5 +1,7 @@
 # LocalAgent Site V3 · Owner selection
 
+**30 Oct direction update:** green Immersive Signal is now the priority. [Open the new B](concept-b-immersive/) / [current evidence and limits](concept-b-immersive/README.md). A remains clean; C now uses green lighting. Earlier captures and measurements below are historical snapshots, not a fresh verification of this revision. Production remains owner-gated.
+
 Stage **#12 only**, parent #11. Base: `develop` at `9ad380ee1f7b0d828db03afb489a494968502668`. No direction has been selected. Issues #13–17 remain blocked. This is not a production engine or a redesigned release.
 
 ## Open all three working prototypes

@@ -41,7 +41,7 @@ void main(){
  if(!converged){gl_FragColor=vec4(0.);return;}
  vec3 hit=ro+rd*distance;vec3 n=normal(hit);vec3 light=normalize(vec3(-2.,3.,4.));
  float diffuse=max(dot(n,light),0.);float rim=pow(1.-max(dot(n,-rd),0.),2.5);
- vec3 base=concept==0?vec3(.075,.22,.16):mix(vec3(.28,.4,.34),vec3(.36,.23,.14),progress);
+ vec3 base=concept==0?vec3(.075,.22,.16):mix(vec3(.16,.37,.25),vec3(.22,.46,.29),progress);
  vec3 color=base*(.38+diffuse*.9);
  float spec=pow(max(dot(reflect(-light,n),-rd),0.),44.);
  color+=vec3(.85,1.,.85)*spec*.85;

@@ -1195,3 +1195,6 @@ html:not(.js) [data-js] {
 }
 
 }
+body[data-concept=c]{background:#06140d;color:#e4f2dc;--line:#31543c;--muted:#b4c9ad;--accent:#a6df93}
+body[data-concept=c] .journey-sticky{background:transparent}
+@media(max-width:650px){body[data-concept=c] .journey-object{background:#06140d}}

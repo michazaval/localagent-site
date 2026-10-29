@@ -1,4 +1,5 @@
 import {sphere,ribbons,bufferSize} from './geometry.js';
+import {fieldGeometry,fieldVertex,fieldFragment} from './field.js';
 
 const vertex=`#version 300 es
 precision highp float; precision highp int;
@@ -70,11 +71,12 @@ void main(){
 
 function percentile(values,p){if(!values.length)return null;const sorted=values.slice().sort((a,b)=>a-b);return sorted[Math.floor((sorted.length-1)*p)];}
 export function createOrbital(canvas,_kind,onStatus){
+ const immersive=_kind==='bimmersive';
  const stage=canvas.closest('.stage'),reduced=matchMedia('(prefers-reduced-motion: reduce)');
  let quality=innerWidth<700?'balanced':'high';
  if((navigator.deviceMemory||8)<=4||(navigator.hardwareConcurrency||8)<=4)quality='lite';
  let gl,program,meshes=[],uniforms={},timerExt,pending=null,raf=0,last=0,lastRender=0,time=0,orbit=0;
- let paused=false,visible=true,target=0,focus=1,px=0,py=0,aimX=0,aimY=0,disposed=false,lost=false;
+ let paused=false,visible=true,target=0,focus=1,px=0,py=0,aimX=0,aimY=0,disposed=false,lost=false,story=0,targetStory=0;
  const weights=new Float32Array([1,0,0,0]);
  const frameTimes=new Float64Array(600),cpuTimes=new Float64Array(600),gpuTimes=new Float64Array(600);
  let frames=0,gpuCount=0,totalDraws=0;
@@ -102,14 +104,14 @@ export function createOrbital(canvas,_kind,onStatus){
   try{
    gl=canvas.getContext('webgl2',{alpha:true,antialias:true,preserveDrawingBuffer:false,powerPreference:'default'});
    if(!gl)throw Error('WebGL2 unavailable');
-   const vs=compile(gl.VERTEX_SHADER,vertex),fs=compile(gl.FRAGMENT_SHADER,fragment);
+   const vs=compile(gl.VERTEX_SHADER,immersive?fieldVertex:vertex),fs=compile(gl.FRAGMENT_SHADER,immersive?fieldFragment:fragment);
    program=gl.createProgram();gl.attachShader(program,vs);gl.attachShader(program,fs);gl.bindAttribLocation(program,0,'position');gl.linkProgram(program);gl.deleteShader(vs);gl.deleteShader(fs);
    if(!gl.getProgramParameter(program,gl.LINK_STATUS))throw Error(gl.getProgramInfoLog(program));
-   for(const name of ['time','orbit','aspect','focus','glow','pointer','weights','kind'])uniforms[name]=gl.getUniformLocation(program,name);
+   for(const name of ['time','orbit','aspect','focus','glow','pointer','weights','kind','progress','pixelRatio'])uniforms[name]=gl.getUniformLocation(program,name);
    const high=quality==='high';
    const dust=new Float32Array((high?100:45)*3);
    for(let i=0;i<dust.length;i+=3){const a=i*2.399;dust[i]=Math.sin(a)*(1.+(i%13)/20);dust[i+1]=Math.cos(i*.63)*1.55;dust[i+2]=Math.cos(a)*1.2;}
-   meshes=[mesh(sphere(high?96:48,high?64:32)),mesh(ribbons(high?420:180,3)),mesh({vertices:dust})];
+   meshes=immersive?[mesh(fieldGeometry(high?18000:6500))]:[mesh(sphere(high?96:48,high?64:32)),mesh(ribbons(high?420:180,3)),mesh({vertices:dust})];
    timerExt=gl.getExtension('EXT_disjoint_timer_query_webgl2');
    gl.enable(gl.DEPTH_TEST);gl.depthFunc(gl.LEQUAL);gl.enable(gl.BLEND);
    canvas.dataset.antialias=String(gl.getContextAttributes().antialias);delete canvas.dataset.fallbackReason;
@@ -126,6 +128,10 @@ export function createOrbital(canvas,_kind,onStatus){
   let query=null;if(timerExt&&!pending&&totalDraws%12===0){query=gl.createQuery();gl.beginQuery(timerExt.TIME_ELAPSED_EXT,query);}
   gl.viewport(0,0,canvas.width,canvas.height);gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);gl.useProgram(program);
   gl.uniform1f(uniforms.time,time);gl.uniform1f(uniforms.orbit,orbit);gl.uniform1f(uniforms.aspect,canvas.width/canvas.height);gl.uniform2f(uniforms.pointer,px,py);gl.uniform4fv(uniforms.weights,weights);gl.uniform1f(uniforms.focus,focus);
+  if(immersive){
+   gl.uniform1f(uniforms.progress,story);gl.uniform1f(uniforms.pixelRatio,canvas.width/Math.max(canvas.clientWidth,1));
+   gl.blendFunc(gl.SRC_ALPHA,gl.ONE);gl.depthMask(false);gl.bindVertexArray(meshes[0].vao);gl.drawArrays(gl.POINTS,0,meshes[0].count);
+  }else{
   gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);gl.depthMask(true);
   gl.uniform1i(uniforms.kind,0);gl.uniform1f(uniforms.glow,0);gl.bindVertexArray(meshes[0].vao);gl.drawElements(gl.TRIANGLES,meshes[0].count,gl.UNSIGNED_SHORT,0);
   gl.uniform1i(uniforms.kind,1);gl.bindVertexArray(meshes[1].vao);gl.drawElements(gl.TRIANGLES,meshes[1].count,gl.UNSIGNED_SHORT,0);
@@ -133,6 +139,7 @@ export function createOrbital(canvas,_kind,onStatus){
   gl.depthMask(false);gl.blendFunc(gl.SRC_ALPHA,gl.ONE);gl.uniform1f(uniforms.glow,1);gl.drawElements(gl.TRIANGLES,meshes[1].count,gl.UNSIGNED_SHORT,0);
   gl.uniform1i(uniforms.kind,0);gl.bindVertexArray(meshes[0].vao);gl.drawElements(gl.TRIANGLES,meshes[0].count,gl.UNSIGNED_SHORT,0);
   gl.uniform1i(uniforms.kind,2);gl.bindVertexArray(meshes[2].vao);gl.drawArrays(gl.POINTS,0,meshes[2].count);gl.depthMask(true);
+  }
   if(query){gl.endQuery(timerExt.TIME_ELAPSED_EXT);pending=query;}
   totalDraws++;
   if(record){frameTimes[frames%600]=interval;cpuTimes[frames%600]=performance.now()-start;frames++;}
@@ -147,6 +154,7 @@ export function createOrbital(canvas,_kind,onStatus){
    const smoothing=1-Math.exp(-dt/380);
    for(let i=0;i<4;i++)weights[i]+=((i===target?1:0)-weights[i])*smoothing;
    px+=(aimX-px)*(1-Math.exp(-dt/240));py+=(aimY-py)*(1-Math.exp(-dt/240));
+   story+=(targetStory-story)*(1-Math.exp(-dt/420));
    time+=dt/1000;orbit+=dt/1000*(.18+weights[1]*.18+weights[3]*.28);draw(!!last,last?now-last:0);last=now;lastRender=lastRender?now-((now-lastRender)%interval):now;
   }
   raf=requestAnimationFrame(tick);
@@ -154,7 +162,8 @@ export function createOrbital(canvas,_kind,onStatus){
  function sync(){stop();if(active())raf=requestAnimationFrame(tick);else if(!document.hidden&&visible)draw();}
  function resize(){const r=canvas.getBoundingClientRect();[canvas.width,canvas.height]=bufferSize(r.width,r.height,devicePixelRatio,quality);draw();}
  function point(e){if(paused||reduced.matches)return;const r=canvas.getBoundingClientRect();aimX=(e.clientX-r.left)/r.width-.5;aimY=(e.clientY-r.top)/r.height-.5;}
- stage.addEventListener('pointermove',point,{passive:true});stage.addEventListener('pointerdown',point,{passive:true});stage.addEventListener('pointerleave',()=>{aimX=aimY=0;});
+ const inputSurface=immersive?window:stage;
+ inputSurface.addEventListener('pointermove',point,{passive:true});inputSurface.addEventListener('pointerdown',point,{passive:true});stage.addEventListener('pointerleave',()=>{aimX=aimY=0;});
  document.addEventListener('visibilitychange',sync);reduced.addEventListener('change',sync);
  const intersection=new IntersectionObserver(([e])=>{visible=e.isIntersecting;sync();});intersection.observe(canvas);
  const observer=new ResizeObserver(resize);observer.observe(canvas);
@@ -165,9 +174,9 @@ export function createOrbital(canvas,_kind,onStatus){
  canvas.orbitalMetrics=()=>{
   const n=Math.min(frames,600),f=Array.from(frameTimes.subarray(0,n)),c=Array.from(cpuTimes.subarray(0,n)),g=Array.from(gpuTimes.subarray(0,Math.min(gpuCount,600)));
   const debug=gl?.getExtension('WEBGL_debug_renderer_info');
-  return {quality,frames,totalDraws,fps:f.length?1000/(f.reduce((a,b)=>a+b,0)/f.length):null,frameP50:percentile(f,.5),frameP95:percentile(f,.95),cpuP95:percentile(c,.95),gpuP50:percentile(g,.5),gpuP95:percentile(g,.95),gpuSamples:g.length,gpuTimerAvailable:!!timerExt,renderer:debug?gl.getParameter(debug.UNMASKED_RENDERER_WEBGL):'unavailable',pixels:canvas.width*canvas.height,antialias:canvas.dataset.antialias};
+  return {quality,story,frames,totalDraws,fps:f.length?1000/(f.reduce((a,b)=>a+b,0)/f.length):null,frameP50:percentile(f,.5),frameP95:percentile(f,.95),cpuP95:percentile(c,.95),gpuP50:percentile(g,.5),gpuP95:percentile(g,.95),gpuSamples:g.length,gpuTimerAvailable:!!timerExt,renderer:debug?gl.getParameter(debug.UNMASKED_RENDERER_WEBGL):'unavailable',pixels:canvas.width*canvas.height,antialias:canvas.dataset.antialias};
  };
  function setQuality(value){quality=value;stop();release();if(quality!=='lite')init();status();resize();frames=gpuCount=0;sync();return quality;}
  if(quality!=='lite')init();status();resize();sync();
- return {pause(value){paused=value;sync();},state(value){target=value;if(paused||reduced.matches){weights.fill(0);weights[value]=1;}sync();},focus(value){focus=value;draw();},rotate(value){aimX=value;draw();},lite(value){setQuality(value?'lite':'balanced');return quality==='lite';},quality:setQuality};
+ return {pause(value){paused=value;sync();},state(value){target=value;if(paused||reduced.matches){weights.fill(0);weights[value]=1;}sync();},focus(value){focus=value;draw();},rotate(value){aimX=value;draw();},progress(value){targetStory=Math.max(0,Math.min(1,value));},lite(value){setQuality(value?'lite':'balanced');return quality==='lite';},quality:setQuality};
 }

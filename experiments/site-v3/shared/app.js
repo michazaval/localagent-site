@@ -17,7 +17,7 @@ let selectedState=0;
 function showRenderer(){
   document.querySelector('#renderer-status').textContent=renderMode==='webgl'?text('WebGL · local rendering','WebGL · локальная графика'):text('Static preview · lightweight','Статичный эскиз · лёгкий режим');
 }
-const factory=kind==='bplus'?(await import('../concept-bplus/orbital.js')).createOrbital:createScene;
+const factory=['bplus','bimmersive'].includes(kind)?(await import('../concept-bplus/orbital.js')).createOrbital:createScene;
 const scene=factory(canvas,kind,value=>{renderMode=value;lite=value==='lite';showRenderer();const quality=document.querySelector('#quality');if(quality)quality.value=canvas.dataset.quality;});
 document.querySelector('#quality')?.addEventListener('change',event=>scene.quality(event.target.value));
 function motionLabels(){
@@ -39,8 +39,8 @@ function localize(){
   document.querySelector('#lite').textContent=lite?text('Try 3D','Включить 3D'):text('Lite mode','Лёгкий режим');
   document.querySelector('#lite').setAttribute('aria-pressed',String(lite));
   showRenderer();motionLabels();announceState();updateDetail();
-  const title={a:['Sculptural Clarity','Скульптурная ясность'],b:['Immersive Signal','Иммерсивный сигнал'],bplus:['Orbital Intelligence','Орбитальный интеллект'],c:['Cinematic Journey','Кинематографичная история']}[kind];
-  document.title=`LocalAgent / ${kind==='bplus'?'B+':kind.toUpperCase()} — ${text(...title)}`;
+  const title={a:['Sculptural Clarity','Скульптурная ясность'],b:['Immersive Signal','Иммерсивный сигнал'],bimmersive:['Immersive Signal / Living space','Живое пространство'],bplus:['Orbital Intelligence','Орбитальный интеллект'],c:['Cinematic Journey','Кинематографичная история']}[kind];
+  document.title=`LocalAgent / ${kind==='bplus'?'B+':kind==='bimmersive'?'B':kind.toUpperCase()} — ${text(...title)}`;
 }
 document.querySelector('#language').addEventListener('click',()=>{language=language==='en'?'ru':'en';localize();});
 document.querySelector('#pause').addEventListener('click',()=>{paused=!paused;scene.pause(paused);motionLabels();});
@@ -98,3 +98,6 @@ if(kind==='c'){
   window.addEventListener('scroll',()=>{if(!scheduled){scheduled=true;requestAnimationFrame(scroll);}},{passive:true});scroll();
 }
 localize();
+if(kind==='bimmersive'){
+ const {mountStory}=await import('../concept-b-immersive/story.js');mountStory(scene);
+}

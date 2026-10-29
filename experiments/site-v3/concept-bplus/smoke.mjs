@@ -12,20 +12,25 @@ try{
  // Deliberately exercise the runner's constrained-device policy on every platform.
  await page.addInitScript(()=>Object.defineProperty(navigator,'hardwareConcurrency',{value:2}));
  const errors=[];page.on('pageerror',e=>errors.push(e.message));
- for(const path of ['concept-a','concept-c','concept-bplus']){
+ for(const path of ['concept-a','concept-c','concept-bplus','concept-b-immersive']){
   await page.goto(`http://127.0.0.1:8783/experiments/site-v3/${path}/`);
   await page.waitForFunction(()=>document.title.includes(' — '));
-  if(path==='concept-bplus')await page.selectOption('#quality','high');
+  if(['concept-bplus','concept-b-immersive'].includes(path))await page.selectOption('#quality','high');
   else await page.click('#lite');
   try{await page.waitForFunction(()=>document.querySelector('canvas').dataset.renderer==='webgl');}
   catch(error){throw new Error(`${path}: ${JSON.stringify(await page.locator('canvas').evaluate(e=>({...e.dataset})))}`,{cause:error});}
-  if(path==='concept-bplus'){
+  if(['concept-bplus','concept-b-immersive'].includes(path)){
    for(const quality of ['high','balanced','lite','high']){await page.selectOption('#quality',quality);assert.equal(await page.locator('canvas').getAttribute('data-quality'),quality);}
    for(const state of [0,1,2,3]){await page.click(`button[data-state="${state}"]`);assert.equal(await page.locator(`button[data-state="${state}"]`).getAttribute('aria-pressed'),'true');}
    await page.emulateMedia({reducedMotion:'reduce'});await page.waitForFunction(()=>document.querySelector('#pause').disabled);
    await page.emulateMedia({reducedMotion:'no-preference'});
    await page.setViewportSize({width:360,height:844});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
+   if(path==='concept-b-immersive'){
+    await page.locator('.story-nav a[href="#boundary"]').click();
+    await page.waitForFunction(()=>document.querySelector('canvas').orbitalMetrics().story>.5);
+    assert.equal(await page.locator('body').getAttribute('data-chapter'),'2');
+   }
   }
  }
- assert.deepEqual(errors,[]);console.log('PASS: A/C WebGL, B+ profiles, states, motion policy and mobile layout');
+ assert.deepEqual(errors,[]);console.log('PASS: A/C WebGL, B+/immersive profiles, modes, motion policy, mobile and story progress');
 }finally{await browser?.close();server.kill();}

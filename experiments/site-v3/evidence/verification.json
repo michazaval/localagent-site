@@ -1,0 +1,85 @@
+{
+  "base": "9ad380ee1f7b0d828db03afb489a494968502668",
+  "scope": "Issue #12 only; owner gate pending",
+  "unitTests": {
+    "passed": 18,
+    "failed": 0
+  },
+  "build": "passed; dist contains 12 allow-listed files, no experiments",
+  "browser": {
+    "engine": "installed Chrome via Playwright",
+    "concepts": [
+      "a",
+      "b",
+      "c"
+    ],
+    "widths": [
+      360,
+      390,
+      430,
+      768,
+      1440,
+      1920
+    ],
+    "languages": [
+      "en",
+      "ru"
+    ],
+    "layoutCases": 36,
+    "errors": [],
+    "verified": [
+      "WebGL renderer and zero GL errors",
+      "heading/body/control horizontal bounds",
+      "A detail selection and keyboard rotation",
+      "B four modes and reversible permission simulation",
+      "C chapter anchors",
+      "touch input",
+      "pause and reduced-motion pixel stability",
+      "Lite and restore",
+      "forced missing WebGL",
+      "low-memory default",
+      "JS disabled",
+      "WebGL context loss",
+      "gallery image loading and MP4 playback"
+    ]
+  },
+  "lighthouse": {
+    "a-desktop": {
+      "accessibility": 100,
+      "bestPractices": 100
+    },
+    "b-mobile": {
+      "accessibility": 100,
+      "bestPractices": 100
+    },
+    "c-mobile": {
+      "accessibility": 100,
+      "bestPractices": 100
+    }
+  },
+  "shortDesktopDrawSamples": [
+    {
+      "concept": "a",
+      "drawsInOneSecond": 27,
+      "bufferPixels": 378209,
+      "pausedDrawsIn250ms": 0
+    },
+    {
+      "concept": "b",
+      "drawsInOneSecond": 27,
+      "bufferPixels": 424800,
+      "pausedDrawsIn250ms": 0
+    },
+    {
+      "concept": "c",
+      "drawsInOneSecond": 27,
+      "bufferPixels": 301270,
+      "pausedDrawsIn250ms": 0
+    }
+  ],
+  "limits": [
+    "No physical-device, screen-reader or cross-browser certification",
+    "No sustained GPU or thermal benchmark",
+    "Concepts remain selection prototypes; no production implementation authorized"
+  ]
+}

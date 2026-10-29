@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="An isolated LocalAgent V3 design exploration. Interactive WebGL concept simulation, not a live AI session or product release.">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#eeeee6">
+<title>LocalAgent / Sculptural Clarity</title>
+<link rel="icon" href="../../../assets/favicon.svg">
+<link rel="stylesheet" href="../shared/design.css">
+<script type="module" src="../shared/app.js">
+</script>
+</head>
+<body data-concept="a">
+<a class="skip" href="#main">
+<span data-en="Skip to content" data-ru="К содержимому">Skip to content</span>
+</a>
+<header class="site-nav">
+<a class="brand" href="../">L<span class="brand-mark">/</span>A <span>LocalAgent</span>
+</a>
+<a class="concept-label" href="../">A / <span data-en="Design exploration" data-ru="Дизайн-концепция">Design exploration</span>
+</a>
+<div class="nav-tools" data-js>
+<button id="lite" type="button" aria-pressed="false">Lite mode</button>
+<button id="pause" type="button" aria-pressed="false">Pause FX</button>
+<button id="language" type="button" aria-label="Switch to Russian">RU</button>
+</div>
+</header>
+<main id="main">
+<section class="a-hero wrap">
+<div class="a-copy">
+<p class="eyebrow" data-en="A / Sculptural Clarity" data-ru="A / Скульптурная ясность">A / Sculptural Clarity</p>
+<h1>
+<span data-en="Intelligence." data-ru="Интеллект.">Intelligence.</span>
+<br>
+<span data-en="A little closer." data-ru="Немного ближе.">A little closer.</span>
+</h1>
+<p class="lead" data-en="A Windows assistant in development, designed around local models and the person in control. You." data-ru="Windows-ассистент в разработке. В основе — локальные модели и человек, который всё контролирует. Ты.">A Windows assistant in development, designed around local models and the person in control. You.</p>
+<a class="button" href="#principles">
+<span data-en="Explore the thinking" data-ru="Узнать замысел">Explore the thinking</span> <span aria-hidden="true">↗</span>
+</a>
+<p class="simulation" data-en="Concept simulation. Not a live AI session." data-ru="Визуальная симуляция. Не настоящий сеанс ИИ.">Concept simulation. Not a live AI session.</p>
+</div>
+<div class="a-object">
+<div class="stage is-lite" id="scene-stage">
+<svg class="fallback" viewBox="0 0 400 400" aria-hidden="true">
+<defs>
+<linearGradient id="metal">
+<stop stop-color="#0e3027"/>
+<stop offset=".45" stop-color="#86b697"/>
+<stop offset=".7" stop-color="#173d2e"/>
+<stop offset="1" stop-color="#a7bfa0"/>
+</linearGradient>
+</defs>
+<ellipse cx="200" cy="200" rx="112" ry="142" fill="none" stroke="url(#metal)" stroke-width="42" transform="rotate(35 200 200)"/>
+<ellipse cx="200" cy="200" rx="124" ry="54" fill="none" stroke="#75977f" stroke-width="12" transform="rotate(-30 200 200)"/>
+</svg>
+<canvas aria-label="Original interactive 3D concept sculpture" data-label-en="Original interactive 3D concept sculpture" data-label-ru="Оригинальная интерактивная 3D-сцена" role="img">
+</canvas>
+<span class="stage-caption" id="renderer-status">Static preview · lightweight</span>
+</div>
+<div class="object-controls" data-js>
+<label for="angle">
+<span data-en="Turn the sculpture" data-ru="Повернуть скульптуру">Turn the sculpture</span>
+</label>
+<input id="angle" type="range" min="-180" max="180" value="0">
+<span aria-hidden="true">− / +</span>
+</div>
+</div>
+<div class="a-baseline">
+<p data-en="Made for your machine. Built around your choice." data-ru="Для твоего компьютера. Вокруг твоего выбора.">Made for your machine. Built around your choice.</p>
+<span>WINDOWS / IN DEVELOPMENT</span>
+</div>
+</section>
+<section class="a-principles" id="principles">
+<div class="wrap">
+<div class="section-intro">
+<h2 data-en="Less distance. More agency." data-ru="Меньше дистанции. Больше свободы.">Less distance. More agency.</h2>
+<p data-en="Not another place to send your thinking. A different relationship with the computer in front of you." data-ru="Не ещё одно место, куда отправляют мысли. Другое отношение к компьютеру перед тобой.">Not another place to send your thinking. A different relationship with the computer in front of you.</p>
+</div>
+<div class="principle-layout">
+<div class="principle-tabs" role="group" aria-label="Explore the concept" data-js>
+<button type="button" data-detail="model" aria-pressed="true">
+<span>01</span>
+<span data-en="Local models" data-ru="Локальные модели">Local models</span>
+</button>
+<button type="button" data-detail="memory" aria-pressed="false">
+<span>02</span>
+<span data-en="Remembered context" data-ru="Сохранённый контекст">Remembered context</span>
+</button>
+<button type="button" data-detail="control" aria-pressed="false">
+<span>03</span>
+<span data-en="Human control" data-ru="Контроль человека">Human control</span>
+</button>
+</div>
+<article class="principle-detail" aria-live="polite">
+<div class="boundary-symbol" aria-hidden="true">↳</div>
+<h3 id="detail-title">On your hardware. On your terms.</h3>
+<p id="detail-copy">Local models are the intended foundation for core responses. Hardware support and availability are still being developed.</p>
+<a href="../../../#roadmap">
+<span data-en="See the current development roadmap" data-ru="Текущий план разработки">See the current development roadmap</span> ↗</a>
+</article>
+</div>
+<p class="closing-note">
+<span data-en="This is a design direction, not a release announcement. No download is available here." data-ru="Это дизайн-направление, не анонс релиза. Скачать приложение здесь нельзя.">This is a design direction, not a release announcement. No download is available here.</span>
+</p>
+</div>
+</section>
+</main>
+<footer>
+<a href="../">
+<span data-en="Compare all three concepts" data-ru="Сравнить три концепции">Compare all three concepts</span> <span aria-hidden="true">↗</span>
+</a>
+<p data-en="Independent Windows AI · In development" data-ru="Независимый ИИ для Windows · В разработке">Independent Windows AI · In development</p>
+<span>LOCAL / HUMAN / INDEPENDENT</span>
+</footer>
+<noscript>
+<p class="no-js">Static concept preview. Enable JavaScript for interactive 3D, language and simulation controls. Статичный эскиз: интерактивность доступна с JavaScript.</p>
+</noscript>
+</body>
+</html>

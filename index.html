@@ -55,11 +55,11 @@
       </div>
       <div class="hero-layout section-container">
         <div class="hero-copy">
-          <div class="hero-ruler"><span>LOCAL INTELLIGENCE</span><span>↘ 01</span></div>
+          <p class="hero-ruler" data-i18n="heroRuler">Local intelligence. Human control.</p>
           <h1 id="hero-heading" class="hero-title"><span data-i18n="heroLine1">YOUR</span><span class="outlined" data-i18n="heroLine2">SPACE.</span><span><span data-i18n="heroLine3">YOUR AI</span><span class="lime-period">.</span></span></h1>
           <div class="hero-bottom">
             <p class="hero-description" data-i18n="heroDesc">We're building a Windows assistant that can think, remember and act on your machine — with local models at its core.</p>
-            <a href="#approach" class="round-arrow" aria-label="Discover LocalAgent"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6"/></svg></a>
+            <div class="hero-actions"><a href="#experience" class="hero-primary" data-i18n="heroExplore">Explore the concept</a><a href="#approach" class="hero-secondary" data-i18n="heroIdea">The idea behind it</a></div>
           </div>
           <p class="hero-footnote"><span class="mini-line"></span><span data-i18n="heroFootnote">NOT A CLOUD CHATBOT. NOT A WEB APP.</span></p>
         </div>
@@ -73,7 +73,7 @@
             <div class="field-bottom-data"><span class="field-breath" id="stateText">SIGNAL: IDLE</span><span id="fieldCounter">PARTICLES / 064</span></div>
           </div>
           <p class="signal-insight" id="signalInsight" role="status" aria-live="polite">SIGNAL / IDLE — Waiting for an instruction. Visual simulation.</p>
-          <div class="field-controls" aria-label="Interactive visual states">
+          <div class="field-controls" aria-label="Interactive visual states" aria-describedby="signalInsight">
             <span class="controls-caption" data-i18n="controlsCaption">TRY A STATE</span>
             <div class="control-buttons" role="group" aria-label="Signal states">
               <button class="state-btn is-active" type="button" data-state="idle" aria-pressed="true" data-i18n="stateIdle">IDLE</button>

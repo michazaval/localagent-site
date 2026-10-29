@@ -39,8 +39,10 @@
       motionToggle.setAttribute('aria-pressed', String(paused));
       const ru = root.lang === 'ru';
       motionToggle.setAttribute('aria-label', unavailable ? (ru ? 'Системный режим без анимации' : 'System reduced motion enabled') : paused ? (ru ? 'Включить анимацию' : 'Resume decorative animation') : (ru ? 'Остановить анимацию' : 'Pause decorative animation'));
-      motionToggle.title = motionToggle.getAttribute('aria-label');
+
       motionLabel.textContent = unavailable ? (ru ? 'БЕЗ FX' : 'REDUCED') : paused ? (ru ? 'ВКЛ. FX' : 'PLAY FX') : (ru ? 'ПАУЗА FX' : 'PAUSE FX');
+      motionToggle.setAttribute('aria-label', motionLabel.textContent + ': ' + motionToggle.getAttribute('aria-label'));
+      motionToggle.title = motionToggle.getAttribute('aria-label');
       motionToggle.querySelector('.motion-icon').textContent = paused ? '▶' : 'Ⅱ';
     }
     document.dispatchEvent(new Event('localagent:motion-change'));

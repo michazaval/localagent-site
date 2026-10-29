@@ -1,29 +1,16 @@
 name: LocalAgent site — validate and publish
 
 on:
-  pull_request:
-    branches: [develop, main]
-    paths:
-      - "index.html"
-      - "404.html"
-      - "robots.txt"
-      - "assets/**"
-      - "scripts/**"
-      - "tests/**"
-      - "package.json"
-      - ".github/workflows/pages.yml"
-  push:
-    branches: [develop, main]
-    paths:
-      - "index.html"
-      - "404.html"
-      - "robots.txt"
-      - "assets/**"
-      - "scripts/**"
-      - "tests/**"
-      - "package.json"
-      - ".github/workflows/pages.yml"
   workflow_dispatch:
+    inputs:
+      source_sha:
+        description: Exact 40-character commit SHA selected by QA
+        required: true
+        type: string
+      checkpoint:
+        description: QA approval reference and purpose (organizational approval)
+        required: true
+        type: string
 
 permissions:
   contents: read
@@ -35,15 +22,36 @@ concurrency:
 jobs:
   verify:
     name: Verify website
+    if: >-
+      github.repository == 'michazaval/localagent-site' &&
+      github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
       contents: read
     steps:
+      - name: Validate checkpoint inputs
+        shell: bash
+        env:
+          SOURCE_SHA: ${{ inputs.source_sha }}
+          CHECKPOINT: ${{ inputs.checkpoint }}
+        run: |
+          set -euo pipefail
+          [[ "$SOURCE_SHA" =~ ^[0-9a-f]{40}$ ]]
+          [[ -n "${CHECKPOINT//[[:space:]]/}" ]]
       - name: Checkout
         uses: actions/checkout@v4
         with:
+          ref: ${{ inputs.source_sha }}
           persist-credentials: false
+      - name: Confirm exact source
+        shell: bash
+        env:
+          SOURCE_SHA: ${{ inputs.source_sha }}
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$SOURCE_SHA"
+          printf 'Website source: `%s`\n' "$SOURCE_SHA" >> "$GITHUB_STEP_SUMMARY"
       - name: Set up Node
         uses: actions/setup-node@v4
         with:

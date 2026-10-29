@@ -36,9 +36,9 @@ vec3 normal(vec3 p){vec2 e=vec2(.002,0.);return normalize(vec3(object(p+e.xyy)-o
 void main(){
  vec2 p=uv; p.x*=size.x/size.y;
  vec3 ro=vec3(0.,0.,3.8);vec3 rd=normalize(vec3(p*1.5,-3.2));
- float distance=0.;
- for(int i=0;i<68;i++){float d=object(ro+rd*distance);if(d<.0018||distance>7.)break;distance+=d*.8;}
- if(distance>7.){gl_FragColor=vec4(0.);return;}
+ float distance=0.;bool converged=false;
+ for(int i=0;i<68;i++){float d=object(ro+rd*distance);if(distance>7.)break;if(d<.0018){converged=true;break;}distance+=d*.8;}
+ if(!converged){gl_FragColor=vec4(0.);return;}
  vec3 hit=ro+rd*distance;vec3 n=normal(hit);vec3 light=normalize(vec3(-2.,3.,4.));
  float diffuse=max(dot(n,light),0.);float rim=pow(1.-max(dot(n,-rd),0.),2.5);
  vec3 base=concept==0?vec3(.075,.22,.16):mix(vec3(.28,.4,.34),vec3(.36,.23,.14),progress);

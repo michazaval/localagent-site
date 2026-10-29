@@ -1,0 +1,33 @@
+name: Site V3 experiments — verify only
+on:
+  pull_request:
+    paths:
+      - 'experiments/site-v3/**'
+      - '.github/workflows/site-v3-experiments.yml'
+permissions:
+  contents: read
+jobs:
+  verify-experiments:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Unit, syntax and production build isolation
+        run: |
+          npm run build
+          find experiments/site-v3 -name '*.js' -o -name '*.mjs' | while read file; do node --check "$file"; done
+          test ! -e dist/experiments
+      - name: Install isolated browser test tools
+        run: |
+          npm install --prefix "$RUNNER_TEMP/v3-tools" --no-save --ignore-scripts playwright@1.64.1
+          "$RUNNER_TEMP/v3-tools/node_modules/.bin/playwright" install --with-deps chromium
+      - name: Bounded WebGL browser smoke
+        timeout-minutes: 3
+        env:
+          V3_PLAYWRIGHT: '${{ runner.temp }}/v3-tools/node_modules/playwright'
+        run: node experiments/site-v3/concept-bplus/smoke.mjs

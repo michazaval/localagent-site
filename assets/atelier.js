@@ -82,10 +82,10 @@
     if(!width||!height)return;
     ctx.clearRect(0,0,width,height);
     const c=renderColor;
-    const size=Math.min(width*.49,height*.52,355);
+    const size=Math.min(width*.49,height*.48,310);
     const onPhone=width<650;
-    const cx=width*(onPhone?.66:.73)+pointer.x*size*.055;
-    const cy=height*(onPhone?.68:.52)+pointer.y*size*.045;
+    const cx=width*.5+pointer.x*size*.055;
+    const cy=height*.5+pointer.y*size*.045;
     const rate=spinSpeed;
     const t=time*.001;
 

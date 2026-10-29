@@ -1,13 +1,20 @@
 name: Publish stable and develop preview
 
 on:
-  push:
-    branches: [main]
-  workflow_run:
-    workflows: ["LocalAgent site — validate and publish"]
-    types: [completed]
-    branches: [develop]
   workflow_dispatch:
+    inputs:
+      main_sha:
+        description: Approved current main HEAD for Stable (40-character SHA)
+        required: true
+        type: string
+      preview_sha:
+        description: Approved current develop HEAD for Preview (40-character SHA)
+        required: true
+        type: string
+      checkpoint:
+        description: Owner publication approval reference and purpose
+        required: true
+        type: string
 
 permissions:
   contents: read
@@ -21,16 +28,23 @@ jobs:
     name: Build stable and preview together
     if: >-
       github.repository == 'michazaval/localagent-site' &&
-      (github.event_name != 'workflow_run' ||
-       (github.event.workflow_run.event == 'push' &&
-        github.event.workflow_run.conclusion == 'success' &&
-        github.event.workflow_run.head_branch == 'develop' &&
-        github.event.workflow_run.head_repository.full_name == github.repository))
+      github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
       contents: read
     steps:
+      - name: Validate publication inputs
+        shell: bash
+        env:
+          MAIN_SHA: ${{ inputs.main_sha }}
+          PREVIEW_SHA: ${{ inputs.preview_sha }}
+          CHECKPOINT: ${{ inputs.checkpoint }}
+        run: |
+          set -euo pipefail
+          [[ "$MAIN_SHA" =~ ^[0-9a-f]{40}$ ]]
+          [[ "$PREVIEW_SHA" =~ ^[0-9a-f]{40}$ ]]
+          [[ -n "${CHECKPOINT//[[:space:]]/}" ]]
       - name: Checkout stable main
         uses: actions/checkout@v4
         with:
@@ -40,9 +54,19 @@ jobs:
       - name: Checkout develop preview
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || 'develop' }}
+          ref: develop
           path: preview-source
           persist-credentials: false
+      - name: Confirm approved branch snapshots
+        shell: bash
+        env:
+          MAIN_SHA: ${{ inputs.main_sha }}
+          PREVIEW_SHA: ${{ inputs.preview_sha }}
+        run: |
+          set -euo pipefail
+          test "$(git -C stable rev-parse HEAD)" = "$MAIN_SHA"
+          test "$(git -C preview-source rev-parse HEAD)" = "$PREVIEW_SHA"
+          printf 'Stable main: `%s`\nPreview develop: `%s`\n' "$MAIN_SHA" "$PREVIEW_SHA" >> "$GITHUB_STEP_SUMMARY"
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
@@ -70,6 +94,7 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: publish
+          retention-days: 1
 
   deploy:
     name: Deploy both URLs from main workflow

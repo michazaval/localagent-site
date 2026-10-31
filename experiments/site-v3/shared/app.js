@@ -31,6 +31,7 @@ function syncQualityControls(){
 }
 function syncNavHeight(){document.documentElement.style.setProperty('--nav-height',`${document.querySelector('.site-nav').getBoundingClientRect().height+8}px`);}
 window.addEventListener('resize',syncNavHeight);
+new ResizeObserver(syncNavHeight).observe(document.querySelector('.site-nav'));
 const factory=['bplus','bimmersive'].includes(kind)?(await import('../concept-bplus/orbital.js')).createOrbital:createScene;
 const scene=factory(canvas,kind,value=>{renderMode=value;syncQualityControls();});
 document.querySelector('#quality')?.addEventListener('change',event=>scene.quality(event.target.value));

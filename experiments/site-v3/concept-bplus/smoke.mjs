@@ -5,7 +5,7 @@ const {chromium}=createRequire(import.meta.url)(process.env.V3_PLAYWRIGHT||'play
 const base='http://127.0.0.1:8783';
 const server=spawn(process.env.PYTHON||'python3',['experiments/site-v3/preview.py','--port','8783','--minutes','3'],{stdio:'ignore'});
 let browser;
-const deadline=setTimeout(()=>{server.kill();browser?.close();console.error('Smoke deadline exceeded');setTimeout(()=>process.exit(1),2000).unref();},170000);
+const deadline=setTimeout(()=>{server.kill();console.error('Smoke deadline exceeded (including cleanup)');process.exit(1);},170000);
 const errors=[];
 async function open(context,path='concept-b-immersive'){
  const page=await context.newPage();page.setDefaultTimeout(8000);page.setDefaultNavigationTimeout(10000);
@@ -83,6 +83,6 @@ try{
  await nojs.close();assert.deepEqual(errors,[]);
  console.log('LOCAL PASS: quality EN/RU + context recovery; four chapters; pause/reduced freeze; no-WebGL/no-JS; A/C/B+ smoke. Hosted CI NOT RUN.');
 }finally{
- clearTimeout(deadline);
- await Promise.race([browser?.close(),new Promise(r=>setTimeout(r,3000))]);server.kill();
+ server.kill();
+ await browser?.close();clearTimeout(deadline);
 }

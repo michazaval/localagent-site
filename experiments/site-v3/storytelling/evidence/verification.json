@@ -1,0 +1,62 @@
+{
+  "pass": true,
+  "localOnly": true,
+  "productionIntegration": "GATED ON OWNER #22 VISUAL ACCEPTANCE",
+  "samples": [
+    {
+      "width": 1440,
+      "metrics": {
+        "quality": "high",
+        "weights": [
+          0.05383525788784027,
+          0.8569214940071106,
+          0.064117930829525,
+          0.01902581937611103,
+          0.006099435966461897
+        ],
+        "source": "scroll",
+        "composition": 0.028482700903196177,
+        "frames": 79,
+        "totalDraws": 86,
+        "pointCount": 22000,
+        "frameP95": 16.799999999999955,
+        "cpuP95": 0.10000000149011612,
+        "gpuP95": 0.039936,
+        "gpuSamples": 8,
+        "fps": 53.094966059547005,
+        "pixels": 1440000,
+        "activeBuffers": 8,
+        "activePrograms": 1,
+        "disposed": false
+      }
+    },
+    {
+      "width": 390,
+      "metrics": {
+        "quality": "balanced",
+        "weights": [
+          0.07170403003692627,
+          0.8369395732879639,
+          0.06030352786183357,
+          0.02513272874057293,
+          0.00592009024694562
+        ],
+        "source": "scroll",
+        "composition": 0.02808821630605588,
+        "frames": 37,
+        "totalDraws": 44,
+        "pointCount": 8500,
+        "frameP95": 33.40000000000009,
+        "cpuP95": 0.10000000149011612,
+        "gpuP95": 0.032768,
+        "gpuSamples": 4,
+        "fps": 30.010544245275373,
+        "pixels": 329160,
+        "activeBuffers": 8,
+        "activePrograms": 1,
+        "disposed": false
+      }
+    }
+  ],
+  "errors": []
+}

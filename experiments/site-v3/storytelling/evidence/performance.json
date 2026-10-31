@@ -1,0 +1,19 @@
+{
+  "conditions": "single localhost navigation each, no throttle, cache not controlled; not field CWV/INP",
+  "samples": [
+    {
+      "label": "baseline",
+      "lcp": 240,
+      "cls": 0,
+      "longTasks": [
+        192
+      ]
+    },
+    {
+      "label": "proof",
+      "lcp": 76,
+      "cls": 0,
+      "longTasks": []
+    }
+  ]
+}

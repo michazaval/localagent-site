@@ -1,0 +1,14 @@
+{
+  "gpu": "ANGLE (NVIDIA, NVIDIA GeForce RTX 3090 Ti (0x00002203) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+  "logicalProcessors": 16,
+  "reportedDeviceMemoryGB": 32,
+  "heapUsedBytes": 3546207,
+  "heapTotalBytes": 6076163,
+  "longTasks": [
+    {
+      "start": 14,
+      "duration": 168
+    }
+  ],
+  "scope": "single local navigation + 2.5s; no sustained memory/leak certification"
+}

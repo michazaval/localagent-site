@@ -1,0 +1,90 @@
+{
+  "local": true,
+  "hostedCI": "NOT RUN",
+  "layoutCases": 60,
+  "samples": [
+    {
+      "condition": "high",
+      "metrics": {
+        "quality": "high",
+        "weights": [
+          0.17773179709911346,
+          0.003345375880599022,
+          0.00012714043259620667,
+          0.00014717095473315567,
+          0.8186485767364502
+        ],
+        "source": "scroll",
+        "composition": 0.7931640424019878,
+        "frames": 157,
+        "totalDraws": 1080,
+        "pointCount": 22000,
+        "frameP95": 16.700000000000728,
+        "cpuP95": 0.10000000149011612,
+        "gpuP95": 0.06656,
+        "gpuSamples": 13,
+        "fps": 60.02217379668925,
+        "pixels": 1440000,
+        "activeBuffers": 5,
+        "activePrograms": 1,
+        "disposed": false
+      }
+    },
+    {
+      "condition": "balanced",
+      "metrics": {
+        "quality": "balanced",
+        "weights": [
+          0.17674843966960907,
+          0.000014399729479919188,
+          5.472590487443085e-7,
+          6.334778390737483e-7,
+          0.8232360482215881
+        ],
+        "source": "scroll",
+        "composition": 0.7941840265223157,
+        "frames": 78,
+        "totalDraws": 1160,
+        "pointCount": 8500,
+        "frameP95": 33.400000000001455,
+        "cpuP95": 0.10000000149011612,
+        "gpuP95": 0.049152,
+        "gpuSamples": 7,
+        "fps": 30.010388211303933,
+        "pixels": 949228,
+        "activeBuffers": 5,
+        "activePrograms": 1,
+        "disposed": false
+      }
+    },
+    {
+      "condition": "4x CPU throttle / balanced",
+      "metrics": {
+        "quality": "balanced",
+        "weights": [
+          0.17674429714679718,
+          5.7827513444408396e-8,
+          2.1977242248283346e-9,
+          2.5439685913397625e-9,
+          0.8232554197311401
+        ],
+        "source": "scroll",
+        "composition": 0.7941860428234474,
+        "frames": 79,
+        "totalDraws": 1241,
+        "pointCount": 8500,
+        "frameP95": 33.400000000001455,
+        "cpuP95": 0.19999999925494194,
+        "gpuP95": 0.045056,
+        "gpuSamples": 7,
+        "fps": 30.01063668135544,
+        "pixels": 949228,
+        "activeBuffers": 5,
+        "activePrograms": 1,
+        "disposed": false
+      }
+    }
+  ],
+  "errors": [],
+  "browser": "157.0.8103.27"
+}

@@ -9,7 +9,7 @@ body[data-concept=bplus]{background:#071510;color:#eaf4e7;--line:#355044;--muted
 .b-console{background:transparent}
 .modes button{font-size:12px;letter-spacing:.04em}
 .field-focus input{accent-color:var(--accent)}
-.nav-tools #lite{display:none}
+.nav-tools #lite{display:inline-flex}
 .quality-label{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:12px}
 .quality-label select{font:inherit;color:#eaf4e7;background:#11251a;border:1px solid var(--line);border-radius:4px;min-height:44px;padding:8px;cursor:pointer}
 .quality-label select:focus-visible{outline:2px solid var(--accent);outline-offset:3px}

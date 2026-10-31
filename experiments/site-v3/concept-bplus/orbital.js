@@ -82,7 +82,7 @@ export function createOrbital(canvas,_kind,onStatus){
  let frames=0,gpuCount=0,totalDraws=0;
  function status(){
   stage.classList.toggle('is-lite',quality==='lite'||!gl||lost);
-  canvas.dataset.renderer=gl&&quality!=='lite'&&!lost?'webgl':'fallback';canvas.dataset.quality=quality;
+  canvas.dataset.renderer=gl&&quality!=='lite'&&!lost?'webgl':'fallback';canvas.dataset.quality=canvas.dataset.renderer==='webgl'?quality:'lite';
   onStatus(canvas.dataset.renderer==='webgl'?'webgl':'lite');
  }
  function compile(type,source){const shader=gl.createShader(type);gl.shaderSource(shader,source);gl.compileShader(shader);if(!gl.getShaderParameter(shader,gl.COMPILE_STATUS)){const error=gl.getShaderInfoLog(shader);gl.deleteShader(shader);throw Error(error);}return shader;}

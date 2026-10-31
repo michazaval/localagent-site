@@ -63,7 +63,7 @@ body[data-concept=bimmersive]::before {
 }
 
 .nav-tools #lite {
-  display:none
+display:inline-flex
 }
 .concept-label {
   color:#c0d2be

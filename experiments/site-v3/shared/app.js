@@ -6,6 +6,7 @@ document.documentElement.classList.add('js');
 const canvas=document.querySelector('canvas');
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');
 let language='en',paused=false,lite=false,renderMode='lite';
+let preferredQuality='high';
 const text=(en,ru)=>language==='ru'?ru:en;
 const stateDescriptions=[
   ['Quiet potential. Waiting for your intent.','Спокойный потенциал. В ожидании твоей команды.'],
@@ -17,8 +18,18 @@ let selectedState=0;
 function showRenderer(){
   document.querySelector('#renderer-status').textContent=renderMode==='webgl'?text('WebGL · local rendering','WebGL · локальная графика'):text('Static preview · lightweight','Статичный эскиз · лёгкий режим');
 }
+function syncQualityControls(){
+  lite=renderMode!=='webgl';
+  const quality=document.querySelector('#quality');
+  if(quality)quality.value=lite?'lite':canvas.dataset.quality;
+  const button=document.querySelector('#lite');
+  button.textContent=lite?text('Try 3D','Включить 3D'):text('Lite mode','Лёгкий режим');
+  button.setAttribute('aria-pressed',String(lite));
+  if(!lite&&canvas.dataset.quality)preferredQuality=canvas.dataset.quality;
+  showRenderer();
+}
 const factory=['bplus','bimmersive'].includes(kind)?(await import('../concept-bplus/orbital.js')).createOrbital:createScene;
-const scene=factory(canvas,kind,value=>{renderMode=value;lite=value==='lite';showRenderer();const quality=document.querySelector('#quality');if(quality)quality.value=canvas.dataset.quality;});
+const scene=factory(canvas,kind,value=>{renderMode=value;syncQualityControls();});
 document.querySelector('#quality')?.addEventListener('change',event=>scene.quality(event.target.value));
 function motionLabels(){
   const button=document.querySelector('#pause');
@@ -36,9 +47,7 @@ function localize(){
   document.querySelectorAll('[data-label-en]').forEach(el=>el.setAttribute('aria-label',el.dataset[language==='ru'?'labelRu':'labelEn']));
   const toggle=document.querySelector('#language');toggle.textContent=language==='en'?'RU':'EN';
   toggle.setAttribute('aria-label',text('Switch to Russian','Переключить на английский'));
-  document.querySelector('#lite').textContent=lite?text('Try 3D','Включить 3D'):text('Lite mode','Лёгкий режим');
-  document.querySelector('#lite').setAttribute('aria-pressed',String(lite));
-  showRenderer();motionLabels();announceState();updateDetail();
+  syncQualityControls();motionLabels();announceState();updateDetail();
   const title={a:['Sculptural Clarity','Скульптурная ясность'],b:['Immersive Signal','Иммерсивный сигнал'],bimmersive:['Immersive Signal / Living space','Живое пространство'],bplus:['Orbital Intelligence','Орбитальный интеллект'],c:['Cinematic Journey','Кинематографичная история']}[kind];
   document.title=`LocalAgent / ${kind==='bplus'?'B+':kind==='bimmersive'?'B':kind.toUpperCase()} — ${text(...title)}`;
 }
@@ -46,7 +55,8 @@ document.querySelector('#language').addEventListener('click',()=>{language=langu
 document.querySelector('#pause').addEventListener('click',()=>{paused=!paused;scene.pause(paused);motionLabels();});
 reduced.addEventListener('change',motionLabels);
 document.querySelector('#lite').addEventListener('click',()=>{
-  lite=scene.lite(!lite);document.querySelector('#lite').setAttribute('aria-pressed',String(lite));localize();
+  if(scene.quality)scene.quality(lite?preferredQuality:'lite');else scene.lite(!lite);
+  syncQualityControls();
 });
 for(const button of document.querySelectorAll('.modes [data-state]'))button.addEventListener('click',()=>{
   selectedState=Number(button.dataset.state);scene.state(selectedState);

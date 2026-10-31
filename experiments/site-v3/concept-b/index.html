@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="An isolated LocalAgent V3 design exploration. Interactive WebGL concept simulation, not a live AI session or product release.">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#081512">
+<title>LocalAgent / Immersive Signal</title>
+<link rel="icon" href="../../../assets/favicon.svg">
+<link rel="stylesheet" href="../shared/design.css">
+<script type="module" src="../shared/app.js">
+</script>
+</head>
+<body data-concept="b">
+<a class="skip" href="#main">
+<span data-en="Skip to content" data-ru="К содержимому">Skip to content</span>
+</a>
+<header class="site-nav">
+<a class="brand" href="../">L<span class="brand-mark">/</span>A <span>LocalAgent</span>
+</a>
+<a class="concept-label" href="../">B / <span data-en="Design exploration" data-ru="Дизайн-концепция">Design exploration</span>
+</a>
+<div class="nav-tools" data-js>
+<button id="lite" type="button" aria-pressed="false">Lite mode</button>
+<button id="pause" type="button" aria-pressed="false">Pause FX</button>
+<button id="language" type="button" aria-label="Switch to Russian">RU</button>
+</div>
+</header>
+<main id="main">
+<section class="b-hero">
+<div class="b-atmosphere" aria-hidden="true">
+</div>
+<div class="b-heading wrap">
+<p class="eyebrow" data-en="B / Immersive Signal" data-ru="B / Иммерсивный сигнал">B / Immersive Signal</p>
+<h1>
+<span data-en="Your intent." data-ru="Твой замысел.">Your intent.</span>
+<br>
+<em>
+<span data-en="A living signal." data-ru="Живой сигнал.">A living signal.</span>
+</em>
+</h1>
+<p class="lead" data-en="A local-first Windows assistant, in development. Explore what thinking, listening and acting could feel like." data-ru="Windows-ассистент с локальным ИИ, в разработке. Исследуй, как могут ощущаться мысль, голос и действие.">A local-first Windows assistant, in development. Explore what thinking, listening and acting could feel like.</p>
+</div>
+<div class="b-space">
+<div class="stage is-lite" id="scene-stage">
+<svg class="fallback" viewBox="0 0 400 400" aria-hidden="true">
+<defs>
+<linearGradient id="metal">
+<stop stop-color="#0e3027"/>
+<stop offset=".45" stop-color="#86b697"/>
+<stop offset=".7" stop-color="#173d2e"/>
+<stop offset="1" stop-color="#a7bfa0"/>
+</linearGradient>
+</defs>
+<ellipse cx="200" cy="200" rx="70" ry="145" fill="none" stroke="#87eac3" stroke-width="1" opacity=".5" transform="rotate(0 200 200)"/>
+<ellipse cx="200" cy="200" rx="85" ry="137" fill="none" stroke="#87eac3" stroke-width="1" opacity=".5" transform="rotate(19 200 200)"/>
+<ellipse cx="200" cy="200" rx="100" ry="129" fill="none" stroke="#87eac3" stroke-width="1" opacity=".5" transform="rotate(38 200 200)"/>
+<ellipse cx="200" cy="200" rx="115" ry="121" fill="none" stroke="#87eac3" stroke-width="1" opacity=".5" transform="rotate(57 200 200)"/>
+<ellipse cx="200" cy="200" rx="130" ry="113" fill="none" stroke="#87eac3" stroke-width="1" opacity=".5" transform="rotate(76 200 200)"/>
+<ellipse cx="200" cy="200" rx="145" ry="105" fill="none" stroke="#87eac3" stroke-width="1" opacity=".5" transform="rotate(95 200 200)"/>
+<ellipse cx="200" cy="200" rx="160" ry="97" fill="none" stroke="#87eac3" stroke-width="1" opacity=".5" transform="rotate(114 200 200)"/>
+<ellipse cx="200" cy="200" rx="175" ry="89" fill="none" stroke="#87eac3" stroke-width="1" opacity=".5" transform="rotate(133 200 200)"/>
+<ellipse cx="200" cy="200" rx="190" ry="81" fill="none" stroke="#87eac3" stroke-width="1" opacity=".5" transform="rotate(152 200 200)"/>
+</svg>
+<canvas aria-label="Original interactive 3D concept sculpture" data-label-en="Original interactive 3D concept sculpture" data-label-ru="Оригинальная интерактивная 3D-сцена" role="img">
+</canvas>
+<span class="stage-caption" id="renderer-status">Static preview · lightweight</span>
+</div>
+<div class="orbital-label" aria-hidden="true">LOCAL<br>INTELLIGENCE<br>FIELD</div>
+</div>
+<div class="b-console wrap">
+<div class="signal-bar">
+<p id="state-description" role="status" aria-live="polite">Quiet potential. Waiting for your intent.</p>
+<a href="#permission-screen">
+<span data-en="Explore control" data-ru="Исследовать контроль">Explore control</span> ↓</a>
+</div>
+<div class="b-instruments" data-js>
+<div class="modes" role="group" aria-label="Visual simulation states">
+<button type="button" data-state="0" aria-pressed="true">IDLE</button>
+<button type="button" data-state="1" aria-pressed="false">THINK</button>
+<button type="button" data-state="2" aria-pressed="false">LISTEN</button>
+<button type="button" data-state="3" aria-pressed="false">ACT</button>
+</div>
+<label class="field-focus" for="focus">
+<span data-en="Field intensity" data-ru="Плотность поля">Field intensity</span>
+<input id="focus" type="range" min="70" max="130" value="100">
+</label>
+</div>
+<p class="simulation" data-en="Concept simulation. Not a live AI session." data-ru="Визуальная симуляция. Не настоящий сеанс ИИ.">Concept simulation. Not a live AI session.</p>
+</div>
+</section>
+<section class="b-permission wrap" id="permission-screen">
+<div>
+<p class="eyebrow" data-en="A signal is not permission." data-ru="Сигнал — не разрешение.">A signal is not permission.</p>
+<h2>
+<span data-en="Nothing moves" data-ru="Ничего не происходит">Nothing moves</span>
+<br>
+<span data-en="without you." data-ru="без тебя.">without you.</span>
+</h2>
+<p class="lead" data-en="The intended boundary: tools act within a scope you choose. This interface simulates a decision; it never asks your browser for file or microphone access." data-ru="Принцип: инструменты действуют в выбранных тобой границах. Здесь — симуляция решения, без запроса доступа к файлам или микрофону.">The intended boundary: tools act within a scope you choose. This interface simulates a decision; it never asks your browser for file or microphone access.</p>
+</div>
+<div class="permission-panel">
+<div class="panel-label">
+<span>HUMAN CONTROL</span>
+<span class="status-dot">
+</span>
+</div>
+<p class="request">
+<span data-en="Organize a workspace folder." data-ru="Навести порядок в рабочей папке.">Organize a workspace folder.</span>
+</p>
+<dl>
+<div>
+<dt>
+<span data-en="Scope" data-ru="Область">Scope</span>
+</dt>
+<dd>
+<span data-en="One selected folder" data-ru="Одна выбранная папка">One selected folder</span>
+</dd>
+</div>
+<div>
+<dt>
+<span data-en="Execution" data-ru="Выполнение">Execution</span>
+</dt>
+<dd>
+<span data-en="Simulation only" data-ru="Только симуляция">Simulation only</span>
+</dd>
+</div>
+</dl>
+<button class="button" type="button" id="permission" aria-pressed="false" data-js>
+<span data-en="Toggle simulated approval" data-ru="Изменить решение в симуляции">Toggle simulated approval</span>
+</button>
+<p id="permission-result" role="status" aria-live="polite" data-en="Awaiting your choice. Nothing has access to your files." data-ru="Ожидает решения. Доступа к твоим файлам нет.">Awaiting your choice. Nothing has access to your files.</p>
+</div>
+</section>
+</main>
+<footer>
+<a href="../">
+<span data-en="Compare all three concepts" data-ru="Сравнить три концепции">Compare all three concepts</span> <span aria-hidden="true">↗</span>
+</a>
+<p data-en="Independent Windows AI · In development" data-ru="Независимый ИИ для Windows · В разработке">Independent Windows AI · In development</p>
+<span>LOCAL / HUMAN / INDEPENDENT</span>
+</footer>
+<noscript>
+<p class="no-js">Static concept preview. Enable JavaScript for interactive 3D, language and simulation controls. Статичный эскиз: интерактивность доступна с JavaScript.</p>
+</noscript>
+</body>
+</html>

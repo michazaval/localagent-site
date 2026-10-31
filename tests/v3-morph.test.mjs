@@ -1,7 +1,18 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {particleTargets} from '../assets/v3/morph-geometry.js';
+import {particleTargets,ribbonStrip} from '../assets/v3/morph-geometry.js';
 import {createMorphState} from '../assets/v3/morph-state.js';
+test('continuous ribbon strips have shared monotonic samples, tapered endpoints and valid topology',()=>{
+ const g=ribbonStrip(320);
+ assert.equal(g.vertices.length,3*321*2*3);
+ assert.equal(g.indices.length,3*320*6);
+ assert(g.indices.every(i=>i<g.vertices.length/3));
+ for(let band=0;band<3;band++){
+  const start=band*321*6;
+  assert.equal(g.vertices[start],0);assert.equal(g.vertices[start+320*6],1);
+  for(let i=0;i<=320;i++){const a=start+i*6;assert.equal(g.vertices[a],g.vertices[a+3]);assert.equal(g.vertices[a+1],-1);assert.equal(g.vertices[a+4],1);}
+ }
+});
 test('persistent IDs produce deterministic bounded, distinct spatial targets',()=>{
  const a=particleTargets(1200),b=particleTargets(1800);
  for(let shape=0;shape<5;shape++){

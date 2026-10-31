@@ -8,11 +8,11 @@ export function particleTargets(count){
  const random=()=>((seed=(Math.imul(seed,1664525)+1013904223)>>>0)/4294967296);
  for(let id=0;id<count;id++){
   const u=random(),v=random(),w=random(),j=random();
-  const a=u*Math.PI*2,z=v*2-1,r=Math.sqrt(1-z*z),rad=id%10===4?.12+.26*Math.cbrt(w):.68+.32*Math.cbrt(w);
+  const a=u*Math.PI*2,z=v*2-1,r=Math.sqrt(1-z*z),rad=id%10===4?.10+.19*Math.cbrt(w):.48+.16*Math.cbrt(w);
   const sphere=[Math.cos(a)*r*rad,z*rad,Math.sin(a)*r*rad];
   if(id%10>=1&&id%10<=3){
-   const t=u,band=id%10-1,angle=t*Math.PI*3.7+band*Math.PI*2/3;
-   const y=(t*2-1)*1.3,radius=1.04+.18*Math.cos(y*1.2),width=(v-.5)*.022;
+   const t=(Math.floor(id/10)*.61803398875)%1,band=id%10-1,angle=t*Math.PI*3.7+band*Math.PI*2/3;
+   const y=(t*2-1)*1.3,radius=.43+.35*Math.cos(y*1.12),width=(v-.5)*.016;
    sphere[0]=Math.cos(angle)*(radius+width);sphere[1]=y+width;sphere[2]=Math.sin(angle)*(radius+width);
   }
   const face=faces[id%20],s=Math.sqrt(u),bary=[1-s,s*(1-v),s*v];
@@ -26,4 +26,15 @@ export function particleTargets(count){
   for(let shape=0;shape<5;shape++)targets[shape].set(all[shape],id*3);
  }
  return {targets,count};
+}
+
+// Ordered triangles, not random point adjacency. Same curve is sampled by the shader.
+export function ribbonStrip(segments){
+ const vertices=[],indices=[];
+ for(let band=0;band<3;band++){
+  const base=vertices.length/3;
+  for(let i=0;i<=segments;i++)for(const side of [-1,1])vertices.push(i/segments,side,band);
+  for(let i=0;i<segments;i++){const j=base+i*2;indices.push(j,j+1,j+2,j+1,j+3,j+2);}
+ }
+ return {vertices:new Float32Array(vertices),indices:new Uint16Array(indices)};
 }

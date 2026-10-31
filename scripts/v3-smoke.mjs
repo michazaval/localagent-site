@@ -47,7 +47,7 @@ try{
  await p.evaluate(()=>{Object.defineProperty(document,'hidden',{configurable:true,value:true});document.dispatchEvent(new Event('visibilitychange'));});
  const hidden=await checkPose(p);await p.waitForTimeout(180);assert.equal((await checkPose(p)).totalDraws,hidden.totalDraws);
  await p.evaluate(()=>{delete document.hidden;document.dispatchEvent(new Event('visibilitychange'));});
- for(const w of [360,390,430,768,1440,1920]){
+ for(const w of (process.env.V3_NARROW?[360,390,430,1440]:[360,390,430,768,1440,1920])){
   await p.setViewportSize({width:w,height:1000});
   for(const ru of [false,true]){
    if(await p.locator('html').getAttribute('lang')!==(ru?'ru':'en'))await p.locator('#language').click();
@@ -69,8 +69,10 @@ try{
  await p.waitForTimeout(150);assert.equal((await checkPose(p)).totalDraws,released.totalDraws);
  const fallback=await browser.newContext();await fallback.addInitScript(()=>{const get=HTMLCanvasElement.prototype.getContext;HTMLCanvasElement.prototype.getContext=function(type,...args){return /webgl/.test(type)?null:get.call(this,type,...args);};});const f=await open(fallback);await f.waitForFunction(()=>document.querySelector('canvas').dataset.renderer==='fallback');await f.selectOption('#quality','high');assert.equal(await f.locator('#quality').inputValue(),'lite');assert(await f.locator('.scene-fallback').isVisible());await fallback.close();
  const low=await browser.newContext();await low.addInitScript(()=>Object.defineProperty(navigator,'hardwareConcurrency',{value:2}));const l=await open(low);await l.waitForFunction(()=>document.querySelector('html').classList.contains('has-scene'));assert.equal(await l.locator('#quality').inputValue(),'lite');await low.close();
- const oom=await browser.newContext();await oom.addInitScript(()=>{const create=WebGL2RenderingContext.prototype.createBuffer;let n=0;WebGL2RenderingContext.prototype.createBuffer=function(){return ++n===3?null:create.call(this);};});
+ for(const allocation of [3,6,8]){
+ const oom=await browser.newContext();await oom.addInitScript(allocation=>{const create=WebGL2RenderingContext.prototype.createBuffer;let n=0;WebGL2RenderingContext.prototype.createBuffer=function(){return ++n===allocation?null:create.call(this);};},allocation);
  const o=await open(oom);await o.waitForFunction(()=>document.querySelector('canvas').dataset.renderer==='fallback');const failed=await checkPose(o);assert.equal(failed.activeBuffers,0);assert.equal(failed.activePrograms,0);assert.equal(failed.quality,'lite');await oom.close();
+ }
  const nojs=await browser.newContext({javaScriptEnabled:false,viewport:{width:390,height:844}});const n=await open(nojs);assert.equal(await n.locator('.chapter').count(),5);assert(await n.locator('h1').isVisible());assert(await n.locator('.scene-fallback').isVisible());await nojs.close();
  assert.deepEqual(errors,[]);const report={local:true,hostedCI:'NOT RUN',layoutCases,samples,errors,browser:browser.version()};if(out)await fs.writeFile(`${out}/verification.json`,JSON.stringify(report,null,2));console.log(JSON.stringify(report,null,2));
 }finally{server.kill();await browser?.close();clearTimeout(deadline);}

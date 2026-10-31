@@ -1,0 +1,53 @@
+{
+  "scope": "steady sphere + ribbons;3s/profile;RTX3090Ti",
+  "samples": [
+    {
+      "quality": "high",
+      "weights": [
+        0.000009014586794364732,
+        0.9999908804893494,
+        0,
+        0,
+        0
+      ],
+      "source": "scroll",
+      "composition": 0,
+      "frames": 181,
+      "totalDraws": 334,
+      "pointCount": 22000,
+      "frameP95": 16.799999999999727,
+      "cpuP95": 0.10000000149011612,
+      "gpuP95": 0.088064,
+      "gpuSamples": 15,
+      "fps": 60.02321339744652,
+      "pixels": 1440000,
+      "activeBuffers": 8,
+      "activePrograms": 1,
+      "disposed": false
+    },
+    {
+      "quality": "balanced",
+      "weights": [
+        1.6296890947842257e-8,
+        0.9999995827674866,
+        0,
+        0,
+        0
+      ],
+      "source": "scroll",
+      "composition": 0,
+      "frames": 90,
+      "totalDraws": 427,
+      "pointCount": 8500,
+      "frameP95": 33.400000000000546,
+      "cpuP95": 0.10000000149011612,
+      "gpuP95": 0.0512,
+      "gpuSamples": 8,
+      "fps": 30.011004034812768,
+      "pixels": 949228,
+      "activeBuffers": 8,
+      "activePrograms": 1,
+      "disposed": false
+    }
+  ]
+}

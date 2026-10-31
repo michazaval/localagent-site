@@ -11,9 +11,12 @@ def main():
     parser.add_argument('--port', type=int, default=8770)
     parser.add_argument('--minutes', type=int, choices=range(1, 121), default=30)
     parser.add_argument('--open', action='store_true', help='Open the comparison gallery')
+    parser.add_argument('--dist', action='store_true', help='Serve only the built allow-listed distribution')
     parser.add_argument('--concept', choices=['v3'], default='v3')
     args = parser.parse_args()
     root = Path(__file__).resolve().parents[1]
+    if args.dist:
+        root = root / 'dist'
     handler = partial(SimpleHTTPRequestHandler, directory=str(root))
     server = ThreadingHTTPServer(('127.0.0.1', args.port), handler)
     timer = Timer(args.minutes * 60, server.shutdown)

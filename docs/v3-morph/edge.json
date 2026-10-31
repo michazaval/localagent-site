@@ -1,0 +1,30 @@
+{
+  "browser": "156.0.4314.50",
+  "pass": true,
+  "errors": [],
+  "scope": "desktop/mobile quality, RU, THINK, pause",
+  "metrics": {
+    "quality": "balanced",
+    "weights": [
+      0.026192249730229378,
+      0.02269037626683712,
+      0.9511174559593201,
+      0,
+      0
+    ],
+    "source": "mode",
+    "composition": 0.5102488524198623,
+    "frames": 45,
+    "totalDraws": 59,
+    "pointCount": 8500,
+    "frameP95": 33.40000000000009,
+    "cpuP95": 0.09999999776482582,
+    "gpuP95": 0.011264,
+    "gpuSamples": 4,
+    "fps": 29.900332225913623,
+    "pixels": 329160,
+    "activeBuffers": 5,
+    "activePrograms": 1,
+    "disposed": false
+  }
+}

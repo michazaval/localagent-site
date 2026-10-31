@@ -457,7 +457,7 @@ body[data-concept=bimmersive]::before {
   position:absolute;
   left:auto;
   right:18px;
-  top:90px;
+  top:var(--nav-height,120px);
   bottom:auto;
   transform:none;
   flex-direction:row
@@ -477,3 +477,4 @@ body[data-concept=bimmersive]::before {
 }
 
 }
+

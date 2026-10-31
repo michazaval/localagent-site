@@ -23,10 +23,12 @@ async function controls(page,quality,ru=false){
 }
 async function frozen(page){
  const before=await page.locator('canvas').evaluate(c=>c.orbitalMetrics());
- await page.evaluate(()=>scrollTo(0,document.body.scrollHeight));await page.waitForTimeout(180);
+ const scrollBefore=await page.evaluate(()=>scrollY);
+ await page.evaluate(()=>scrollTo(0,scrollY>100?0:document.body.scrollHeight));
+ await page.waitForFunction(y=>Math.abs(scrollY-y)>100,scrollBefore);await page.waitForTimeout(180);
  const after=await page.locator('canvas').evaluate(c=>c.orbitalMetrics());
  assert.equal(after.frames,before.frames);assert.equal(after.story,before.story);
- assert.equal(await page.locator('.scene-card').first().evaluate(e=>getComputedStyle(e).opacity),'1');
+ for(const card of await page.locator('.scene-card').all())assert.equal(await card.evaluate(e=>getComputedStyle(e).opacity),'1');
 }
 try{
  server.on('error',e=>errors.push(e.message));
@@ -53,8 +55,11 @@ try{
   await page.waitForFunction(()=>document.querySelector('canvas').dataset.renderer==='fallback');await controls(page,'lite',true);
   await page.evaluate(()=>window.testLoss.restoreContext());await page.waitForFunction(()=>document.querySelector('canvas').dataset.renderer==='webgl');await controls(page,'high',true);
   for(const state of [0,1,2,3]){await page.click(`button[data-state="${state}"]`);assert.equal(await page.locator(`button[data-state="${state}"]`).getAttribute('aria-pressed'),'true');}
-  await page.setViewportSize({width:390,height:844});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
+  await page.setViewportSize({width:360,height:844});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
   if(path==='concept-b-immersive'){
+   await page.evaluate(()=>scrollTo({top:0,behavior:'instant'}));await page.waitForFunction(()=>scrollY===0);
+   await page.waitForFunction(()=>document.querySelector('.story-nav').getBoundingClientRect().top>=document.querySelector('.site-nav').getBoundingClientRect().bottom);
+   assert(await page.evaluate(()=>document.querySelector('.story-nav').getBoundingClientRect().top>=document.querySelector('.site-nav').getBoundingClientRect().bottom),'mobile RU header does not cover chapter links');
    for(const i of [0,1,2,3]){
     const link=page.locator('.story-nav a').nth(i);await link.click();
     await page.waitForFunction(i=>document.body.dataset.chapter===String(i),i);

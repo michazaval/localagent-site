@@ -27,7 +27,10 @@ function syncQualityControls(){
   button.setAttribute('aria-pressed',String(lite));
   if(!lite&&canvas.dataset.quality)preferredQuality=canvas.dataset.quality;
   showRenderer();
+  syncNavHeight();
 }
+function syncNavHeight(){document.documentElement.style.setProperty('--nav-height',`${document.querySelector('.site-nav').getBoundingClientRect().height+8}px`);}
+window.addEventListener('resize',syncNavHeight);
 const factory=['bplus','bimmersive'].includes(kind)?(await import('../concept-bplus/orbital.js')).createOrbital:createScene;
 const scene=factory(canvas,kind,value=>{renderMode=value;syncQualityControls();});
 document.querySelector('#quality')?.addEventListener('change',event=>scene.quality(event.target.value));
@@ -50,6 +53,7 @@ function localize(){
   syncQualityControls();motionLabels();announceState();updateDetail();
   const title={a:['Sculptural Clarity','Скульптурная ясность'],b:['Immersive Signal','Иммерсивный сигнал'],bimmersive:['Immersive Signal / Living space','Живое пространство'],bplus:['Orbital Intelligence','Орбитальный интеллект'],c:['Cinematic Journey','Кинематографичная история']}[kind];
   document.title=`LocalAgent / ${kind==='bplus'?'B+':kind==='bimmersive'?'B':kind.toUpperCase()} — ${text(...title)}`;
+  syncNavHeight();
 }
 document.querySelector('#language').addEventListener('click',()=>{language=language==='en'?'ru':'en';localize();});
 document.querySelector('#pause').addEventListener('click',()=>{paused=!paused;scene.pause(paused);motionLabels();});

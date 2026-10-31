@@ -1,5 +1,7 @@
 # C · Cinematic Journey
 
+30 October update: materials, accent and surroundings now use the green immersive family, replacing the copper direction. [Fresh green capture](../concept-b-immersive/evidence/c-green.png). Earlier palette/captures below describe the original exploration.
+
 Launch from the repository root: `python experiments/site-v3/preview.py --open`, then choose C. Direct path: `/experiments/site-v3/concept-c/`.
 
 **Dramaturgy:** potential → illustrative reasoning → local boundary → conservative development roadmap. A single object evolves with those four ideas. The visitor controls the pace; no scroll hijacking or locked transitions.

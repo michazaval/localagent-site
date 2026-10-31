@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="An isolated LocalAgent V3 design exploration. Interactive WebGL concept simulation, not a live AI session or product release.">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#081512">
+<title>LocalAgent / Orbital Intelligence</title>
+<link rel="icon" href="../../../assets/favicon.svg">
+<link rel="stylesheet" href="../shared/design.css">
+<link rel="stylesheet" href="orbital.css">
+<script type="module" src="../shared/app.js">
+</script>
+</head>
+<body data-concept="bplus">
+<a class="skip" href="#main">
+<span data-en="Skip to content" data-ru="К содержимому">Skip to content</span>
+</a>
+<header class="site-nav">
+<a class="brand" href="../">L<span class="brand-mark">/</span>A <span>LocalAgent</span>
+</a>
+<a class="concept-label" href="../">B+ / <span data-en="Design exploration" data-ru="Дизайн-концепция">Design exploration</span>
+</a>
+<div class="nav-tools" data-js><label class="quality-label" for="quality"><span data-en="Quality" data-ru="Качество">Quality</span><select id="quality" aria-label="Rendering quality" data-label-en="Rendering quality" data-label-ru="Качество графики"><option value="high">High</option><option value="balanced">Balanced</option><option value="lite">Lite</option></select></label>
+<button id="lite" type="button" aria-pressed="false">Lite mode</button>
+<button id="pause" type="button" aria-pressed="false">Pause FX</button>
+<button id="language" type="button" aria-label="Switch to Russian">RU</button>
+</div>
+</header>
+<main id="main">
+<section class="b-hero">
+<div class="b-atmosphere" aria-hidden="true">
+</div>
+<div class="b-heading wrap">
+<p class="eyebrow" data-en="B+ / Orbital Intelligence" data-ru="B+ / Орбитальный интеллект">B+ / Orbital Intelligence</p>
+<h1>
+<span data-en="Your intent." data-ru="Твой замысел.">Your intent.</span>
+<br>
+<em>
+<span data-en="Intelligence in motion." data-ru="Интеллект в движении.">Intelligence in motion.</span>
+</em>
+</h1>
+<p class="lead" data-en="A local-first Windows assistant, in development. Explore what thinking, listening and acting could feel like." data-ru="Windows-ассистент с локальным ИИ, в разработке. Исследуй, как могут ощущаться мысль, голос и действие.">A local-first Windows assistant, in development. Explore what thinking, listening and acting could feel like.</p>
+</div>
+<div class="b-space">
+<div class="stage is-lite" id="scene-stage">
+<svg class="fallback" viewBox="0 0 400 600" aria-hidden="true"><defs><radialGradient id="core"><stop stop-color="#e8ffd4"/><stop offset=".3" stop-color="#9ae9ac"/><stop offset="1" stop-color="#0c241b"/></radialGradient></defs><circle cx="200" cy="300" r="34" fill="url(#core)"/><polyline points="192.20,70.00 188.58,72.56 184.92,75.11 181.25,77.67 177.57,80.22 173.89,82.78 170.22,85.33 166.57,87.89 162.95,90.44 159.39,93.00 155.88,95.56 152.43,98.11 149.07,100.67 145.80,103.22 142.62,105.78 139.56,108.33 136.63,110.89 133.83,113.44 131.17,116.00 128.66,118.56 126.32,121.11 124.15,123.67 122.16,126.22 120.37,128.78 118.76,131.33 117.37,133.89 116.18,136.44 115.21,139.00 114.46,141.56 113.95,144.11 113.66,146.67 113.60,149.22 113.79,151.78 114.21,154.33 114.88,156.89 115.79,159.44 116.93,162.00 118.32,164.56 119.95,167.11 121.82,169.67 123.92,172.22 126.24,174.78 128.80,177.33 131.57,179.89 134.55,182.44 137.74,185.00 141.13,187.56 144.71,190.11 148.47,192.67 152.40,195.22 156.49,197.78 160.74,200.33 165.12,202.89 169.63,205.44 174.26,208.00 178.99,210.56 183.80,213.11 188.70,215.67 193.65,218.22 198.66,220.78 203.69,223.33 208.75,225.89 213.81,228.44 218.86,231.00 223.89,233.56 228.87,236.11 233.80,238.67 238.67,241.22 243.44,243.78 248.12,246.33 252.69,248.89 257.13,251.44 261.44,254.00 265.59,256.56 269.58,259.11 273.39,261.67 277.01,264.22 280.43,266.78 283.65,269.33 286.64,271.89 289.41,274.44 291.94,277.00 294.22,279.56 296.25,282.11 298.03,284.67 299.54,287.22 300.78,289.78 301.75,292.33 302.44,294.89 302.86,297.44 303.00,300.00 302.86,302.56 302.44,305.11 301.75,307.67 300.78,310.22 299.54,312.78 298.03,315.33 296.25,317.89 294.22,320.44 291.94,323.00 289.41,325.56 286.64,328.11 283.65,330.67 280.43,333.22 277.01,335.78 273.39,338.33 269.58,340.89 265.59,343.44 261.44,346.00 257.13,348.56 252.69,351.11 248.12,353.67 243.44,356.22 238.67,358.78 233.80,361.33 228.87,363.89 223.89,366.44 218.86,369.00 213.81,371.56 208.75,374.11 203.69,376.67 198.66,379.22 193.65,381.78 188.70,384.33 183.80,386.89 178.99,389.44 174.26,392.00 169.63,394.56 165.12,397.11 160.74,399.67 156.49,402.22 152.40,404.78 148.47,407.33 144.71,409.89 141.13,412.44 137.74,415.00 134.55,417.56 131.57,420.11 128.80,422.67 126.24,425.22 123.92,427.78 121.82,430.33 119.95,432.89 118.32,435.44 116.93,438.00 115.79,440.56 114.88,443.11 114.21,445.67 113.79,448.22 113.60,450.78 113.66,453.33 113.95,455.89 114.46,458.44 115.21,461.00 116.18,463.56 117.37,466.11 118.76,468.67 120.37,471.22 122.16,473.78 124.15,476.33 126.32,478.89 128.66,481.44 131.17,484.00 133.83,486.56 136.63,489.11 139.56,491.67 142.62,494.22 145.80,496.78 149.07,499.33 152.43,501.89 155.88,504.44 159.39,507.00 162.95,509.56 166.57,512.11 170.22,514.67 173.89,517.22 177.57,519.78 181.25,522.33 184.92,524.89 188.58,527.44 192.20,530.00" fill="none" stroke="#a9e8b3" stroke-width="1.8" opacity=".8"/><polyline points="144.02,70.00 145.74,72.56 147.64,75.11 149.71,77.67 151.97,80.22 154.39,82.78 156.99,85.33 159.74,87.89 162.66,90.44 165.72,93.00 168.93,95.56 172.28,98.11 175.75,100.67 179.35,103.22 183.06,105.78 186.87,108.33 190.77,110.89 194.76,113.44 198.81,116.00 202.93,118.56 207.10,121.11 211.30,123.67 215.53,126.22 219.77,128.78 224.02,131.33 228.25,133.89 232.45,136.44 236.62,139.00 240.75,141.56 244.80,144.11 248.78,146.67 252.68,149.22 256.47,151.78 260.15,154.33 263.71,156.89 267.13,159.44 270.40,162.00 273.51,164.56 276.45,167.11 279.21,169.67 281.78,172.22 284.15,174.78 286.32,177.33 288.26,179.89 289.98,182.44 291.47,185.00 292.73,187.56 293.74,190.11 294.50,192.67 295.01,195.22 295.26,197.78 295.25,200.33 294.99,202.89 294.46,205.44 293.67,208.00 292.62,210.56 291.31,213.11 289.74,215.67 287.92,218.22 285.84,220.78 283.52,223.33 280.96,225.89 278.17,228.44 275.14,231.00 271.90,233.56 268.44,236.11 264.78,238.67 260.93,241.22 256.89,243.78 252.69,246.33 248.32,248.89 243.81,251.44 239.16,254.00 234.38,256.56 229.50,259.11 224.52,261.67 219.47,264.22 214.34,266.78 209.17,269.33 203.95,271.89 198.72,274.44 193.48,277.00 188.25,279.56 183.04,282.11 177.87,284.67 172.75,287.22 167.71,289.78 162.74,292.33 157.88,294.89 153.13,297.44 148.50,300.00 144.01,302.56 139.68,305.11 135.51,307.67 131.52,310.22 127.71,312.78 124.11,315.33 120.71,317.89 117.53,320.44 114.58,323.00 111.87,325.56 109.40,328.11 107.19,330.67 105.22,333.22 103.52,335.78 102.09,338.33 100.92,340.89 100.03,343.44 99.41,346.00 99.06,348.56 98.99,351.11 99.19,353.67 99.66,356.22 100.41,358.78 101.41,361.33 102.69,363.89 104.22,366.44 106.00,369.00 108.02,371.56 110.29,374.11 112.78,376.67 115.50,379.22 118.43,381.78 121.56,384.33 124.89,386.89 128.39,389.44 132.07,392.00 135.91,394.56 139.89,397.11 144.01,399.67 148.25,402.22 152.59,404.78 157.03,407.33 161.55,409.89 166.14,412.44 170.78,415.00 175.46,417.56 180.17,420.11 184.89,422.67 189.60,425.22 194.30,427.78 198.97,430.33 203.60,432.89 208.17,435.44 212.67,438.00 217.09,440.56 221.41,443.11 225.63,445.67 229.74,448.22 233.72,450.78 237.56,453.33 241.25,455.89 244.79,458.44 248.16,461.00 251.36,463.56 254.38,466.11 257.22,468.67 259.86,471.22 262.31,473.78 264.55,476.33 266.58,478.89 268.41,481.44 270.02,484.00 271.42,486.56 272.60,489.11 273.57,491.67 274.32,494.22 274.86,496.78 275.18,499.33 275.29,501.89 275.19,504.44 274.89,507.00 274.39,509.56 273.69,512.11 272.80,514.67 271.72,517.22 270.47,519.78 269.04,522.33 267.44,524.89 265.68,527.44 263.78,530.00" fill="none" stroke="#a9e8b3" stroke-width="1.8" opacity=".8"/><polyline points="263.78,70.00 265.68,72.56 267.44,75.11 269.04,77.67 270.47,80.22 271.72,82.78 272.80,85.33 273.69,87.89 274.39,90.44 274.89,93.00 275.19,95.56 275.29,98.11 275.18,100.67 274.86,103.22 274.32,105.78 273.57,108.33 272.60,110.89 271.42,113.44 270.02,116.00 268.41,118.56 266.58,121.11 264.55,123.67 262.31,126.22 259.86,128.78 257.22,131.33 254.38,133.89 251.36,136.44 248.16,139.00 244.79,141.56 241.25,144.11 237.56,146.67 233.72,149.22 229.74,151.78 225.63,154.33 221.41,156.89 217.09,159.44 212.67,162.00 208.17,164.56 203.60,167.11 198.97,169.67 194.30,172.22 189.60,174.78 184.89,177.33 180.17,179.89 175.46,182.44 170.78,185.00 166.14,187.56 161.55,190.11 157.03,192.67 152.59,195.22 148.25,197.78 144.01,200.33 139.89,202.89 135.91,205.44 132.07,208.00 128.39,210.56 124.89,213.11 121.56,215.67 118.43,218.22 115.50,220.78 112.78,223.33 110.29,225.89 108.02,228.44 106.00,231.00 104.22,233.56 102.69,236.11 101.41,238.67 100.41,241.22 99.66,243.78 99.19,246.33 98.99,248.89 99.06,251.44 99.41,254.00 100.03,256.56 100.92,259.11 102.09,261.67 103.52,264.22 105.22,266.78 107.19,269.33 109.40,271.89 111.87,274.44 114.58,277.00 117.53,279.56 120.71,282.11 124.11,284.67 127.71,287.22 131.52,289.78 135.51,292.33 139.68,294.89 144.01,297.44 148.50,300.00 153.13,302.56 157.88,305.11 162.74,307.67 167.71,310.22 172.75,312.78 177.87,315.33 183.04,317.89 188.25,320.44 193.48,323.00 198.72,325.56 203.95,328.11 209.17,330.67 214.34,333.22 219.47,335.78 224.52,338.33 229.50,340.89 234.38,343.44 239.16,346.00 243.81,348.56 248.32,351.11 252.69,353.67 256.89,356.22 260.93,358.78 264.78,361.33 268.44,363.89 271.90,366.44 275.14,369.00 278.17,371.56 280.96,374.11 283.52,376.67 285.84,379.22 287.92,381.78 289.74,384.33 291.31,386.89 292.62,389.44 293.67,392.00 294.46,394.56 294.99,397.11 295.25,399.67 295.26,402.22 295.01,404.78 294.50,407.33 293.74,409.89 292.73,412.44 291.47,415.00 289.98,417.56 288.26,420.11 286.32,422.67 284.15,425.22 281.78,427.78 279.21,430.33 276.45,432.89 273.51,435.44 270.40,438.00 267.13,440.56 263.71,443.11 260.15,445.67 256.47,448.22 252.68,450.78 248.78,453.33 244.80,455.89 240.75,458.44 236.62,461.00 232.45,463.56 228.25,466.11 224.02,468.67 219.77,471.22 215.53,473.78 211.30,476.33 207.10,478.89 202.93,481.44 198.81,484.00 194.76,486.56 190.77,489.11 186.87,491.67 183.06,494.22 179.35,496.78 175.75,499.33 172.28,501.89 168.93,504.44 165.72,507.00 162.66,509.56 159.74,512.11 156.99,514.67 154.39,517.22 151.97,519.78 149.71,522.33 147.64,524.89 145.74,527.44 144.02,530.00" fill="none" stroke="#a9e8b3" stroke-width="1.8" opacity=".8"/></svg>
+<canvas aria-label="Original interactive 3D concept sculpture" data-label-en="Original interactive 3D concept sculpture" data-label-ru="Оригинальная интерактивная 3D-сцена" role="img">
+</canvas>
+<span class="stage-caption" id="renderer-status">Static preview · lightweight</span>
+</div>
+<div class="orbital-label" aria-hidden="true">LOCAL<br>INTELLIGENCE<br>FIELD</div>
+</div>
+<div class="b-console wrap"><a class="compare-baseline" href="../concept-b/" data-en="Compare with the original B ↗" data-ru="Сравнить с исходным B ↗">Compare with the original B ↗</a>
+<div class="signal-bar">
+<p id="state-description" role="status" aria-live="polite">Quiet potential. Waiting for your intent.</p>
+<a href="#permission-screen">
+<span data-en="Explore control" data-ru="Исследовать контроль">Explore control</span> ↓</a>
+</div>
+<div class="b-instruments" data-js>
+<div class="modes" role="group" aria-label="Visual simulation states">
+<button type="button" data-state="0" aria-pressed="true">IDLE</button>
+<button type="button" data-state="1" aria-pressed="false">THINK</button>
+<button type="button" data-state="2" aria-pressed="false">LISTEN</button>
+<button type="button" data-state="3" aria-pressed="false">ACT</button>
+</div>
+<label class="field-focus" for="focus">
+<span data-en="Sculpture width" data-ru="Ширина скульптуры">Sculpture width</span>
+<input id="focus" type="range" min="80" max="115" value="100">
+</label>
+</div>
+<p class="simulation" data-en="Concept simulation. Not a live AI session." data-ru="Визуальная симуляция. Не настоящий сеанс ИИ.">Concept simulation. Not a live AI session.</p>
+</div>
+</section>
+<section class="b-permission wrap" id="permission-screen">
+<div>
+<p class="eyebrow" data-en="A signal is not permission." data-ru="Сигнал — не разрешение.">A signal is not permission.</p>
+<h2>
+<span data-en="Nothing moves" data-ru="Ничего не происходит">Nothing moves</span>
+<br>
+<span data-en="without you." data-ru="без тебя.">without you.</span>
+</h2>
+<p class="lead" data-en="The intended boundary: tools act within a scope you choose. This interface simulates a decision; it never asks your browser for file or microphone access." data-ru="Принцип: инструменты действуют в выбранных тобой границах. Здесь — симуляция решения, без запроса доступа к файлам или микрофону.">The intended boundary: tools act within a scope you choose. This interface simulates a decision; it never asks your browser for file or microphone access.</p>
+</div>
+<div class="permission-panel">
+<div class="panel-label">
+<span>HUMAN CONTROL</span>
+<span class="status-dot">
+</span>
+</div>
+<p class="request">
+<span data-en="Organize a workspace folder." data-ru="Навести порядок в рабочей папке.">Organize a workspace folder.</span>
+</p>
+<dl>
+<div>
+<dt>
+<span data-en="Scope" data-ru="Область">Scope</span>
+</dt>
+<dd>
+<span data-en="One selected folder" data-ru="Одна выбранная папка">One selected folder</span>
+</dd>
+</div>
+<div>
+<dt>
+<span data-en="Execution" data-ru="Выполнение">Execution</span>
+</dt>
+<dd>
+<span data-en="Simulation only" data-ru="Только симуляция">Simulation only</span>
+</dd>
+</div>
+</dl>
+<button class="button" type="button" id="permission" aria-pressed="false" data-js>
+<span data-en="Toggle simulated approval" data-ru="Изменить решение в симуляции">Toggle simulated approval</span>
+</button>
+<p id="permission-result" role="status" aria-live="polite" data-en="Awaiting your choice. Nothing has access to your files." data-ru="Ожидает решения. Доступа к твоим файлам нет.">Awaiting your choice. Nothing has access to your files.</p>
+</div>
+</section>
+</main>
+<footer>
+<a href="../">
+<span data-en="Compare all three concepts" data-ru="Сравнить три концепции">Compare all three concepts</span> <span aria-hidden="true">↗</span>
+</a>
+<p data-en="Independent Windows AI · In development" data-ru="Независимый ИИ для Windows · В разработке">Independent Windows AI · In development</p>
+<span>LOCAL / HUMAN / INDEPENDENT</span>
+</footer>
+<noscript>
+<p class="no-js">Static concept preview. Enable JavaScript for interactive 3D, language and simulation controls. Статичный эскиз: интерактивность доступна с JavaScript.</p>
+</noscript>
+</body>
+</html>

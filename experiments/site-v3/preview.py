@@ -11,6 +11,7 @@ def main():
     parser.add_argument('--port', type=int, default=8770)
     parser.add_argument('--minutes', type=int, choices=range(1, 121), default=30)
     parser.add_argument('--open', action='store_true', help='Open the comparison gallery')
+    parser.add_argument('--concept', choices=['all', 'bplus', 'immersive'], default='all')
     args = parser.parse_args()
     root = Path(__file__).resolve().parents[2]
     handler = partial(SimpleHTTPRequestHandler, directory=str(root))
@@ -18,6 +19,10 @@ def main():
     timer = Timer(args.minutes * 60, server.shutdown)
     timer.daemon = True
     url = f'http://127.0.0.1:{args.port}/experiments/site-v3/'
+    if args.concept == 'bplus':
+        url += 'concept-bplus/'
+    elif args.concept == 'immersive':
+        url += 'concept-b-immersive/'
     print(f'{url}\nLocal preview expires in {args.minutes} minutes. Ctrl+C stops it.', flush=True)
     timer.start()
     if args.open:

@@ -1,0 +1,192 @@
+{
+  "passed": true,
+  "layouts": [
+    {
+      "width": 360,
+      "lang": "en"
+    },
+    {
+      "width": 360,
+      "lang": "ru"
+    },
+    {
+      "width": 390,
+      "lang": "en"
+    },
+    {
+      "width": 390,
+      "lang": "ru"
+    },
+    {
+      "width": 430,
+      "lang": "en"
+    },
+    {
+      "width": 430,
+      "lang": "ru"
+    },
+    {
+      "width": 768,
+      "lang": "en"
+    },
+    {
+      "width": 768,
+      "lang": "ru"
+    },
+    {
+      "width": 1440,
+      "lang": "en"
+    },
+    {
+      "width": 1440,
+      "lang": "ru"
+    },
+    {
+      "width": 1920,
+      "lang": "en"
+    },
+    {
+      "width": 1920,
+      "lang": "ru"
+    }
+  ],
+  "samples": [
+    {
+      "state": 0,
+      "quality": "high",
+      "frames": 330,
+      "totalDraws": 659,
+      "fps": 59.961842463886626,
+      "frameP50": 16.69999999999891,
+      "frameP95": 16.799999999999272,
+      "cpuP95": 0.10000000149011612,
+      "gpuP50": 0.080896,
+      "gpuP95": 0.09728,
+      "gpuSamples": 27,
+      "gpuTimerAvailable": true,
+      "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 3090 Ti (0x00002203) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+      "pixels": 456300,
+      "antialias": "true"
+    },
+    {
+      "state": 1,
+      "quality": "high",
+      "frames": 330,
+      "totalDraws": 998,
+      "fps": 59.96184246388663,
+      "frameP50": 16.69999999999891,
+      "frameP95": 16.700000000000728,
+      "cpuP95": 0.10000000149011612,
+      "gpuP50": 0.069632,
+      "gpuP95": 0.090112,
+      "gpuSamples": 28,
+      "gpuTimerAvailable": true,
+      "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 3090 Ti (0x00002203) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+      "pixels": 456300,
+      "antialias": "true"
+    },
+    {
+      "state": 2,
+      "quality": "high",
+      "frames": 330,
+      "totalDraws": 1336,
+      "fps": 59.960752961697814,
+      "frameP50": 16.69999999999709,
+      "frameP95": 16.700000000000728,
+      "cpuP95": 0.10000000149011612,
+      "gpuP50": 0.077824,
+      "gpuP95": 0.090112,
+      "gpuSamples": 28,
+      "gpuTimerAvailable": true,
+      "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 3090 Ti (0x00002203) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+      "pixels": 456300,
+      "antialias": "true"
+    },
+    {
+      "state": 3,
+      "quality": "high",
+      "frames": 330,
+      "totalDraws": 1675,
+      "fps": 59.961842463886626,
+      "frameP50": 16.69999999999709,
+      "frameP95": 16.799999999999272,
+      "cpuP95": 0.10000000149011612,
+      "gpuP50": 0.06656,
+      "gpuP95": 0.079872,
+      "gpuSamples": 28,
+      "gpuTimerAvailable": true,
+      "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 3090 Ti (0x00002203) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+      "pixels": 456300,
+      "antialias": "true"
+    },
+    {
+      "state": 0,
+      "quality": "balanced",
+      "frames": 165,
+      "totalDraws": 1849,
+      "fps": 29.980376480848907,
+      "frameP50": 33.29999999999927,
+      "frameP95": 33.400000000001455,
+      "cpuP95": 0.10000000149011612,
+      "gpuP50": 0.055296,
+      "gpuP95": 0.064512,
+      "gpuSamples": 13,
+      "gpuTimerAvailable": true,
+      "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 3090 Ti (0x00002203) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+      "pixels": 456300,
+      "antialias": "true"
+    },
+    {
+      "state": 1,
+      "quality": "balanced",
+      "frames": 165,
+      "totalDraws": 2017,
+      "fps": 29.9814660028346,
+      "frameP50": 33.30000000000291,
+      "frameP95": 33.400000000001455,
+      "cpuP95": 0.10000000149011612,
+      "gpuP50": 0.060416,
+      "gpuP95": 0.07168,
+      "gpuSamples": 13,
+      "gpuTimerAvailable": true,
+      "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 3090 Ti (0x00002203) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+      "pixels": 456300,
+      "antialias": "true"
+    },
+    {
+      "state": 2,
+      "quality": "balanced",
+      "frames": 165,
+      "totalDraws": 2185,
+      "fps": 29.980921231943313,
+      "frameP50": 33.30000000000291,
+      "frameP95": 33.400000000001455,
+      "cpuP95": 0.10000000149011612,
+      "gpuP50": 0.03584,
+      "gpuP95": 0.049152,
+      "gpuSamples": 13,
+      "gpuTimerAvailable": true,
+      "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 3090 Ti (0x00002203) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+      "pixels": 456300,
+      "antialias": "true"
+    },
+    {
+      "state": 3,
+      "quality": "balanced",
+      "frames": 165,
+      "totalDraws": 2353,
+      "fps": 29.980376480848907,
+      "frameP50": 33.30000000000291,
+      "frameP95": 33.400000000001455,
+      "cpuP95": 0.10000000149011612,
+      "gpuP50": 0.062464,
+      "gpuP95": 0.072704,
+      "gpuSamples": 13,
+      "gpuTimerAvailable": true,
+      "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 3090 Ti (0x00002203) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+      "pixels": 456300,
+      "antialias": "true"
+    }
+  ],
+  "errors": []
+}
